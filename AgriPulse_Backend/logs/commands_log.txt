@@ -1,0 +1,17 @@
+python -m venv agri_venv
+
+pip install django
+
+django-admin startproject AgriPulse_Backend
+
+pip install django-decouple
+
+python manage.py startapp accounts
+
+pip install djangorestframework
+pip install djangorestframework-simplejwt
+pip install django-cors-headers
+
+pip install -U drf-yasg
+
+py manage.py startapp core
