@@ -10,10 +10,11 @@ const LandingPageNavbar = () => {
       <div className='flex items-center justify-between w-full'>
         <img src={MainLogo} alt='logo' className='max-w-[200px] w-auto h-12' />
         <div className='flex items-end space-x-6'>
-          <Button 
-            className='hidden lg:inline-block py-2 px-2 bg-gradient-2 text-center text-white font-semibold rounded-sm transition-transform duration-300 ease-in-out hover:transform hover:translate-y-[-3px]'>
-            <Link to='/login'>Login / Sign Up</Link>
-          </Button>
+          <Link to='/login'>
+            <Button className='hidden lg:inline-block py-2 px-2 bg-gradient-2 text-center text-white font-semibold rounded-sm transition-transform duration-300 ease-in-out hover:transform hover:translate-y-[-3px]'>
+              Login / Sign Up
+            </Button>
+          </Link>
           <ThemeToggle />
         </div>
       </div>

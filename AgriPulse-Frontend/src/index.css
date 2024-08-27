@@ -78,12 +78,16 @@
   .ctm_highlight {
     background-image: url("/Hero_bg.png");
     background-size: cover;
-    background-position: center;
+    background-position: bottom 0px right 50px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
     display: inline-block;
     font-weight: 700;
+  }
+
+  .dark .ctm_highlight {
+    background-position: top 85% right 50px;
   }
 
   .ctm_highlight2 {
