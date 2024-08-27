@@ -33,6 +33,7 @@ export const Icons = {
   dashboard: LayoutDashboardIcon,
   logo: Command,
   login: LogIn,
+  fields: CircuitBoardIcon,
   close: X,
   profile: User2Icon,
   spinner: Loader2,

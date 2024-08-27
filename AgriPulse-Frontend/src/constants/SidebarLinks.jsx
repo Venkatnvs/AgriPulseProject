@@ -6,10 +6,10 @@ export const navItems = [
     label: 'Dashboard',
   },
   {
-    title: 'User',
-    href: '/dashboard/user',
-    icon: 'user',
-    label: 'user',
+    title: 'Fields',
+    href: '/dashboard/fields',
+    icon: 'fields',
+    label: 'fields',
   },
   {
     title: 'Employee',
@@ -22,11 +22,5 @@ export const navItems = [
     href: '/dashboard/profile',
     icon: 'profile',
     label: 'profile',
-  },
-  {
-    title: 'Kanban',
-    href: '/dashboard/kanban',
-    icon: 'kanban',
-    label: 'kanban',
   },
 ];

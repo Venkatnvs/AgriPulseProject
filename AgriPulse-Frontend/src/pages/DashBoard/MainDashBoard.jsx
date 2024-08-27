@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardLayout from './DashboardLayout';
 import PageContainer from '@/components/layout/PageContainer';
+import FieldSelection from '../Fields/components/FieldSelection';
 
 const MainDashBoard = () => {
   return (
@@ -13,6 +14,7 @@ const MainDashBoard = () => {
             </h2>
           </div>
         </div>
+        <FieldSelection />
       </PageContainer>
     </DashboardLayout>
   );
