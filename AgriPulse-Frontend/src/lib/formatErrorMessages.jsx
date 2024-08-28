@@ -5,6 +5,16 @@ const formatErrorMessages = error => {
 
   if (typeof error === 'string') return <p>{error}</p>;
 
+  if (typeof error === "object" && error.length) {
+    return (
+      <>
+        {error.map((msg, index) => (
+          <p key={index}>{msg}</p>
+        ))}
+      </>
+    );
+  }
+
   if (error?.non_field_errors) {
     return (
       <>

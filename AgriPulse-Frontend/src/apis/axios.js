@@ -2,6 +2,8 @@ import axios from 'axios';
 import { API_URLS, BASE_URL } from '../constants/BaseAxios';
 import Cookies from 'js-cookie';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants/CookiesConstants';
+import store from '@/store/store';
+import { logoutUser } from '@/store/actions/authActions';
 
 const AXIOS_INSTANCE = axios.create({
   baseURL: BASE_URL,
@@ -31,6 +33,7 @@ AXIOS_INSTANCE.interceptors.response.use(
       ) {
         // Redirect to login page if token refresh fails
         console.error('Token refresh failed');
+        store.dispatch(logoutUser());
         window.location.href = '/login/';
         return Promise.reject(error);
       }
@@ -56,6 +59,7 @@ AXIOS_INSTANCE.interceptors.response.use(
             ] = `Bearer ${response.data.access}`;
             return AXIOS_INSTANCE(originalRequest);
           } catch (refreshError) {
+            store.dispatch(logoutUser());
             window.location.href = '/login/';
             return Promise.reject(refreshError);
           }

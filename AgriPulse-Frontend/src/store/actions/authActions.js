@@ -109,7 +109,7 @@ export const fetchUser = () => async dispatch => {
     const response = await fetchUserApi();
     dispatch(setUser(response.data));
   } catch (error) {
-    dispatch(setUserFail(error.response.data));
+    dispatch(setUserFail("Couldn't fetch user details"));
   }
 };
 

@@ -9,12 +9,6 @@ const AuthRoute = () => {
   const dispatch = useDispatch();
   const { authTokens, loading, user } = useSelector(state => state.auth);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     dispatch(fetchUser());
-  //   }
-  // }, [dispatch, user]);
-
   if (loading) {
     return <LoadingPage />;
   }
@@ -24,11 +18,9 @@ const AuthRoute = () => {
   }
 
   return (
-    <div>
-      <AuthProvider>
-        <Outlet />
-      </AuthProvider>
-    </div>
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
   );
 };
 

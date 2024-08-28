@@ -1,27 +1,12 @@
+import GradientButtonLink from '@/components/Buttons/GradientButtonLink';
+import { ArrowTopRightIcon, DashboardIcon } from '@radix-ui/react-icons';
+import { LogOut } from 'lucide-react';
 import React from 'react';
 
-const HeroSectionButton = ({ href, text, className="" }) => {
-  return (
-    <a
-      href={href}
-      className={`m-1 
-        inline-block
-        bg-gradient-3
-        no-underline
-        py-3 px-8
-        rounded-full
-        font-semibold
-        transition-transform duration-300
-        hover:translate-y-[-3px]
-        ${className}
-        `}
-    >
-      {text}
-    </a>
-  );
-};
-
-const HeroSection = () => {
+const HeroSection = ({
+  isLoggedin,
+  handleLogout,
+}) => {
   return (
     <section className='relative z-10 text-center pt-5 lg:pt-8 pb-0 px-4 sm:px-4 lg:px-8 min-h-[60vh]'>
       <h1 className='text-4xl sm:text-4xl lg:text-5xl mb-8 lg:mb-10 font-semibold leading-tight'>
@@ -33,8 +18,17 @@ const HeroSection = () => {
         with precise predictions and adaptive watering.
       </p>
       <div className='flex flex-col sm:flex-col lg:flex-row justify-center'>
-        <HeroSectionButton href='/sign-up' text='Get Started' />
-        <HeroSectionButton href='/login' text='Login' className="lg:hidden" />
+        <GradientButtonLink 
+          href={isLoggedin ? '/dashboard' : '/sign-up'}
+          text={isLoggedin ? 'Dashboard' : 'Get Started'}
+          Icon={isLoggedin ? ArrowTopRightIcon : null}
+        />
+        <GradientButtonLink 
+          href={isLoggedin ? '/' : '/login'}
+          text={isLoggedin ? 'Logout' : 'Login'}
+          className="lg:hidden"
+          onClick={isLoggedin ? handleLogout : null}
+        />
       </div>
     </section>
   );
