@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+import math
 
 User = get_user_model()
 
@@ -32,6 +33,26 @@ class Field(models.Model):
             return None
         return lat, lng
     
+    def getXY(self, lat, lon, zoom):
+        numTiles = 1 << zoom
+        lat = max(-85.05112878, min(85.05112878, lat))
+        lon = (lon + 180) % 360 - 180
+        x = round((lon + 180) / 360 * numTiles)
+        y = round((1 - math.log(math.tan(lat * math.pi / 180) + 1 / math.cos(lat * math.pi / 180)) / math.pi) / 2 * numTiles)
+        return [x, y]
+
+    def getGoogleMapsTileUrl(self, longitude, latitude, zoom):
+        xTile, yTile = self.getXY(latitude, longitude, zoom)
+
+        url = f'https://mt1.google.com/vt/lyrs=y&x={xTile}&y={yTile}&z={zoom}'
+        return url
+    
     @property
     def main_coordinate(self):
         return self.get_representative_coordinate()
+    
+    @property
+    def google_maps_url(self):
+        if not self.main_coordinate:
+            return None
+        return self.getGoogleMapsTileUrl(self.main_coordinate[0], self.main_coordinate[1], 17)
