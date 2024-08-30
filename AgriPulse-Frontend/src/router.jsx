@@ -1,5 +1,6 @@
 import MainDashBoard from "./pages/DashBoard/MainDashBoard";
 import AddNewField from "./pages/Fields/AddNewField";
+import FieldDetails from "./pages/Fields/FieldDetails";
 import FieldList from "./pages/Fields/FieldList";
 
 const routes = [
@@ -17,6 +18,11 @@ const routes = [
     name: 'field-create',
     path: '/dashboard/fields/create',
     element: AddNewField,
+  },
+  {
+    name: "field-details",
+    path: '/dashboard/fields/:id',
+    element: FieldDetails,
   }
 ];
 

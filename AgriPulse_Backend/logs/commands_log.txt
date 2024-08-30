@@ -15,3 +15,14 @@ pip install django-cors-headers
 pip install -U drf-yasg
 
 py manage.py startapp core
+
+mkdir apps
+touch __init__.py
+mkdir fields
+
+py manage.py startapp fields ./core/apps/fields
+
+mkdir sensors
+py manage.py startapp sensors ./core/apps/sensors
+
+pip install requests

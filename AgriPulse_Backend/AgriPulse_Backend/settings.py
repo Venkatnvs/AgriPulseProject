@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'core',
     'core.apps.fields',
+    'core.apps.sensors',
 ]
 
 MIDDLEWARE = [
@@ -195,3 +196,6 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+# Weather Forecast API
+AGROMONITORING_API_KEY = config('AGROMONITORING_API_KEY')

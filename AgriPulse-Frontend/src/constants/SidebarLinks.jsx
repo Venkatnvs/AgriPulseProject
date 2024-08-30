@@ -12,10 +12,10 @@ export const navItems = [
     label: 'fields',
   },
   {
-    title: 'Employee',
-    href: '/dashboard/employee',
-    icon: 'employee',
-    label: 'employee',
+    title: 'Devices',
+    href: '/dashboard/devices',
+    icon: 'laptop',
+    label: 'devices',
   },
   {
     title: 'Profile',

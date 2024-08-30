@@ -28,6 +28,7 @@ import {
   UserX2Icon,
   X,
 } from 'lucide-react';
+import EmptyStateIcon from '../../assets/icons/emptyState.svg';
 
 export const Icons = {
   dashboard: LayoutDashboardIcon,
@@ -76,4 +77,8 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+};
+
+export {
+  EmptyStateIcon,
 };

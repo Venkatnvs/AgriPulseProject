@@ -26,3 +26,17 @@ class FieldSerializer(serializers.ModelSerializer):
             for field in self.Meta.read_only_fields:
                 data[field] = getattr(self.instance, field)
         return data
+    
+class WeatherAndForecastSerializer(serializers.Serializer):
+    lat = serializers.FloatField()
+    lon = serializers.FloatField()
+
+    def validate_lat(self, value):
+        if value < -90 or value > 90:
+            raise serializers.ValidationError("Latitude must be between -90 and 90")
+        return value
+    
+    def validate_lon(self, value):
+        if value < -180 or value > 180:
+            raise serializers.ValidationError("Longitude must be between -180 and 180")
+        return value
