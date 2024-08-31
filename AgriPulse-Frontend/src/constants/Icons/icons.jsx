@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   ArrowRight,
+  ChartColumn,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -29,10 +30,10 @@ import {
   X,
 } from 'lucide-react';
 import EmptyStateIcon from '../../assets/icons/emptyState.svg';
+import NewDeviceIcon from '../../assets/icons/newDevice.svg';
 
 export const Icons = {
   dashboard: LayoutDashboardIcon,
-  logo: Command,
   login: LogIn,
   fields: CircuitBoardIcon,
   close: X,
@@ -77,8 +78,10 @@ export const Icons = {
   ),
   twitter: Twitter,
   check: Check,
+  analytics: ChartColumn
 };
 
 export {
   EmptyStateIcon,
+  NewDeviceIcon,
 };

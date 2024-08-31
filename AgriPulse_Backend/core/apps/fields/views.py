@@ -15,12 +15,11 @@ class FieldListCreate(generics.ListCreateAPIView):
     search_fields = ['name', 'crop_type']
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Field.objects.none()
         return Field.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        fields = Field.objects.filter(user = self.request.user, name = serializer.validated_data['name'])
-        if fields.exists():
-            raise serializers.ValidationError("Field with this name already exists")
         serializer.save(user=self.request.user)
     
 class FieldRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -28,10 +27,9 @@ class FieldRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [ permissions.IsAuthenticated ]
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Field.objects.none()
         return Field.objects.filter(user=self.request.user)
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
 class WeatherAndForecast(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]

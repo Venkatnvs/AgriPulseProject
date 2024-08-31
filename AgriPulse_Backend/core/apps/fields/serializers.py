@@ -22,9 +22,12 @@ class FieldSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
+        user=self.context['request'].user
         if self.instance:
             for field in self.Meta.read_only_fields:
                 data[field] = getattr(self.instance, field)
+        if Field.objects.filter(name=data['name'], user=user).exists():
+            raise serializers.ValidationError("Field with this name already exists")
         return data
     
 class WeatherAndForecastSerializer(serializers.Serializer):

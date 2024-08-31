@@ -27,7 +27,6 @@ const AddNewField = () => {
         <AddNewFieldChildren />
       </div>
     </PageContainer>
-    // <AddFieldForm />
   );
 };
 

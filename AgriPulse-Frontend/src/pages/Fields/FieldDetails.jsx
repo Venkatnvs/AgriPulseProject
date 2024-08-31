@@ -90,8 +90,8 @@ const FieldDetailsMain = ({ data }) => {
         onClick={() => {}}
       />
       <section className='flex flex-col gap-4 h-full'>
-        <div className='grid flex-1 gap-4  p-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className='flex-col items-start gap-8 md:flex sticky top-0 self-start'>
+        <div className='grid flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='flex-col items-start gap-8 md:flex lg:sticky lg:top-0 self-start'>
               <MainFieldDetails
                 navButtons={navButtons}
                 setNavButtons={setNavButtons}
@@ -143,7 +143,7 @@ const FieldDetailsMain = ({ data }) => {
               className={`flex rounded-xl bg-secondary/50 p-4 w-full flex-col
                 ${navButtons[3].isActive && 'border border-primary'}`}
             >
-              <h3 className='text-xl my-2'>Field Data Details</h3>
+              <h3 className='text-xl my-2'>Field Details</h3>
               <FieldDataDetails 
                 data={data}
               />
