@@ -108,7 +108,9 @@ const DetailsofDevice = ({ device }) => {
                 <DialogDescription>
                   Are you sure you want to delete this device?
                 </DialogDescription>
-                <DialogFooter>
+                <DialogFooter
+                  className='flex justify-end gap-4'
+                >
                   <Button
                     variant='destructive'
                     onClick={handleDelete}
