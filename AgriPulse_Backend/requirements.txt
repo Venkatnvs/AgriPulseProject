@@ -5,6 +5,7 @@ djangorestframework-simplejwt
 django-cors-headers
 drf-yasg
 requests
+django_filters
 dj-database-url
 whitenoise
 psycopg2-binary
