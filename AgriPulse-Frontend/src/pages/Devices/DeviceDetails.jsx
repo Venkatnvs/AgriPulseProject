@@ -5,7 +5,6 @@ import LoadingPage from '@/components/LoadingPage';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DetailsofDevice from './components/DetailsofDevice';
-import HeaderWithButton from '@/components/PageHeaders/HeaderWithButton';
 import TextHeader from '@/components/PageHeaders/TextHeader';
 
 

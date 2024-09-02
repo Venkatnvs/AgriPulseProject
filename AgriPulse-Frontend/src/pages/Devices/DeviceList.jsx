@@ -4,6 +4,7 @@ import HeaderWithButton from '@/components/PageHeaders/HeaderWithButton';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import DeviceListComponent from './components/DeviceListComponent';
+import { Plus } from 'lucide-react';
 
 const DeviceListMain = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const DeviceListMain = () => {
         onClick={() => {
           navigate('/dashboard/devices/create');
         }}
+        icon={<Plus className='mr-2 h-4 w-4' />}
       />
 
       <DeviceListComponent />

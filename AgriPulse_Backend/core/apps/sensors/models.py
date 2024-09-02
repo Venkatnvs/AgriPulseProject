@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-import uuid, random
+import uuid
+from django.core.exceptions import ValidationError
+from core.apps.fields.models import Field
 
 User = get_user_model()
 
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    fields = models.ManyToManyField(Field, related_name='devices')
     device_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
     access_token = models.CharField(max_length=255, unique=True, null=True, blank=True)
     configurations = models.JSONField(null=True, blank=True)
@@ -15,9 +18,16 @@ class Device(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        if self.pk and self.fields.exists():
+            self.validate_fields_belong_to_user()
         if not self.access_token:
             self.access_token = self.generate_access_token()
         super().save(*args, **kwargs)
+
+    def validate_fields_belong_to_user(self):
+        for field in self.fields.all():
+            if field.user != self.user:
+                raise ValidationError(f"The field '{field.name}' does not belong to the user '{self.user.email}'.")
 
     def generate_access_token(self):
         token = uuid.uuid4().hex
@@ -45,5 +55,13 @@ class SoilSensor(models.Model):
         return f"Sensor data for {self.device.user} on {self.timestamp}"
 
     def get_average_soil_moisture(self):
+        """
+            soil_moisture: {
+                "s1": 10,
+                "s2": 20,
+                "s3": 30,
+                ....
+            }
+        """
         moisture_values = self.soil_moisture.values()
         return sum(moisture_values) / len(moisture_values) if moisture_values else 0

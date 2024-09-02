@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import EmptyStateIcon from '../../assets/icons/emptyState.svg';
 import NewDeviceIcon from '../../assets/icons/newDevice.svg';
+import LinkUnlinkIcon from '../../assets/icons/LinkUnlink.gif';
 
 export const Icons = {
   dashboard: LayoutDashboardIcon,
@@ -84,4 +85,5 @@ export const Icons = {
 export {
   EmptyStateIcon,
   NewDeviceIcon,
+  LinkUnlinkIcon
 };

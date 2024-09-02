@@ -15,9 +15,12 @@ class DeviceSerializer(serializers.ModelSerializer):
         return device
     
     def update(self, instance, validated_data):
-        for key, value in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
+        fields = validated_data.pop('fields', None)
+        instance = super().update(instance, validated_data)
+        if fields is not None:
+            instance.fields.set(fields)
+            instance.is_configured = True
+            instance.save()
         return instance
     
     def validate(self, attrs):
@@ -55,3 +58,8 @@ class SoilSensorSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         data['average_soil_moisture'] = instance.get_average_soil_moisture()
         return data
+    
+class DeviceListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Device
+        fields = ['id', 'name']

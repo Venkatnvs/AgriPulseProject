@@ -188,6 +188,9 @@ const DetailsofDevice = ({ device }) => {
                           <PulsatingButton
                             className='ml-4 py-1 bg-primary dark:bg-primary text-white dark:text-white'
                             pulseColor='#ff9800'
+                            onClick={() =>
+                              navigate(`/dashboard/devices/${device.id}/configure`)
+                            }
                           >
                             Configure
                           </PulsatingButton>

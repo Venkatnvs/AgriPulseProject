@@ -20,3 +20,9 @@ export const deleteFieldApi = id => AXIOS_INSTANCE.delete(`/core/fields/${id}/`)
 
 export const fetchWeatherAndForecastApi = formData =>
     AXIOS_INSTANCE.post('/core/fields/weather-and-forecast/', formData);
+
+export const fetchFieldsForSelectApi = () =>
+    AXIOS_INSTANCE.get('/core/fields/select-list/');
+
+export const linkDeviceApi = (fieldId, deviceId) =>
+    AXIOS_INSTANCE.post(`/core/fields/${fieldId}/link-device/`, { device_id: deviceId });

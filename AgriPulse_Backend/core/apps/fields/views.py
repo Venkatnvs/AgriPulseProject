@@ -1,11 +1,12 @@
 from rest_framework import generics, permissions, filters, serializers, status
 from .models import Field
-from .serializers import FieldSerializer, WeatherAndForecastSerializer
+from .serializers import FieldSerializer, WeatherAndForecastSerializer, FieldListSelectSerializer, FieldLinkToDeviceSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FieldFilter
 from rest_framework.response import Response
 import requests
 from django.conf import settings
+from core.apps.sensors.models import Device
 
 class FieldListCreate(generics.ListCreateAPIView):
     serializer_class = FieldSerializer
@@ -80,3 +81,35 @@ class WeatherAndForecast(generics.GenericAPIView):
     
     def get_forecast_for_lat_lng(self, lat, lon):
         return self.call_weather_api(lat, lon, 'weather/forecast')
+
+class FieldListSelect(generics.ListAPIView):
+    serializer_class = FieldListSelectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Field.objects.none()
+        return Field.objects.filter(
+            user=self.request.user,
+            devices__isnull=True
+        )
+class FieldDeviceLinkView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = FieldLinkToDeviceSerializer
+
+    def post(self, request, pk):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        device_id = serializer.validated_data['device_id']
+        try:
+            field = Field.objects.get(pk=pk, user=request.user)
+        except Field.DoesNotExist:
+            return Response({"errors": "Field not found"}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            device = Device.objects.get(id=device_id, user=request.user)
+        except Device.DoesNotExist:
+            return Response({"errors": "Device not found"}, status=status.HTTP_404_NOT_FOUND)
+        if field.devices.filter(id=device_id).exists():
+            return Response({"errors": "Device already linked"}, status=status.HTTP_400_BAD_REQUEST)
+        field.devices.add(device)
+        return Response({"message": "Device linked successfully"}, status=status.HTTP_200_OK)

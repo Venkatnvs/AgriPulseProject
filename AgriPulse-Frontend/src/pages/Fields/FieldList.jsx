@@ -18,6 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import Meteors from '@/components/magicui/meteors';
 import { Input } from '@/components/ui/input';
 import { EmptyStateIcon } from '@/constants/Icons/icons';
+import { Plus } from 'lucide-react';
 
 const FieldListContainer = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const FieldListContainer = () => {
         onClick={() => {
           navigate('/dashboard/fields/create');
         }}
+        icon={<Plus className='mr-2 h-4 w-4' />}
       />
 
       <div className="flex w-full">

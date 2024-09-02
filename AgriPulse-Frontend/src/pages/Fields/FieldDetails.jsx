@@ -3,20 +3,22 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import PageContainer from '@/components/layout/PageContainer';
 import HeaderWithButton from '@/components/PageHeaders/HeaderWithButton';
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import DisplayMapView from './components/DisplayMapView';
-import { Loader } from 'lucide-react';
+import { Link2, Loader, Plus } from 'lucide-react';
 import MainFieldDetails from './components/FieldDetails/MainFieldDetails';
 import WeatherDetails from './components/FieldDetails/WeatherDetails';
 import { Separator } from '@/components/ui/separator';
 import ForecastDetails from './components/FieldDetails/ForecastDetails';
 import FieldDataDetails from './components/FieldDetails/FieldDataDetails';
+import LinkDeviceDialog from './components/LinkDeviceDialog';
 
-const FieldDetailsMain = ({ data }) => {
+const FieldDetailsMain = ({ data, setFieldData = () => {} }) => {
   const mapViewRef = useRef(null);
   const weatherDetailsRef = useRef(null);
   const forecastDetailsRef = useRef(null);
   const fieldDataDetailsRef = useRef(null);
+  const navigate = useNavigate();
 
   const navButtonsList = [
     {
@@ -64,6 +66,7 @@ const FieldDetailsMain = ({ data }) => {
 
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState(null);
+  const [openLinkDeviceModal, setOpenLinkDeviceModal] = useState(false);
 
   const fetchWeatherData = async () => {
     try{
@@ -77,7 +80,7 @@ const FieldDetailsMain = ({ data }) => {
 
   useEffect(() => {
     if (data?.main_coordinate) {
-      fetchWeatherData();
+      // fetchWeatherData();
     }
   }, [data]);
 
@@ -86,9 +89,34 @@ const FieldDetailsMain = ({ data }) => {
       <HeaderWithButton
         title={data?.name}
         description={data?.description || 'No description'}
-        buttonText='Link Device'
-        onClick={() => {}}
+        buttonText={data?.linked_devices ? 'View Device' : 'Link Device'}
+        onClick={() => {
+          if (!data?.linked_devices) {
+            setOpenLinkDeviceModal(true);
+          } else {
+            navigate(`/dashboard/devices/${data?.linked_devices}`);
+          }
+        }}
+        icon={
+          data?.linked_devices ? (
+            <Link2 className='mr-2 h-4 w-4' />
+          ) : (
+            <Plus className='mr-2 h-4 w-4' />
+          )
+        }
       />
+
+      {
+        openLinkDeviceModal && (
+          <LinkDeviceDialog
+            openLinkDeviceModal={openLinkDeviceModal}
+            setOpenLinkDeviceModal={setOpenLinkDeviceModal}
+            data={data}
+            setFieldData={setFieldData}
+          />
+        )
+      }
+
       <section className='flex flex-col gap-4 h-full'>
         <div className='grid flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3'>
           <div className='flex-col items-start gap-8 md:flex lg:sticky lg:top-0 self-start'>
@@ -183,7 +211,7 @@ const FieldDetails = () => {
     <PageContainer scrollable={true}>
       <div className='space-y-2'>
         <Breadcrumbs items={breadcrumbItems} />
-        <FieldDetailsMain data={fieldData} />
+        <FieldDetailsMain data={fieldData} setFieldData={setFieldData} />
       </div>
     </PageContainer>
   );

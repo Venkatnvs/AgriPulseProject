@@ -22,6 +22,7 @@ import Meteors from '@/components/magicui/meteors';
 import { useTheme } from '@/themes/theme-provider';
 import { Circle, CircleDot, Dot, Trash } from 'lucide-react';
 import { formatText } from '../scripts/utils';
+import { EmptyStateIcon } from '@/constants/Icons/icons';
 
 const DeviceListComponent = () => {
   const [devices, setDevices] = useState([]);
@@ -141,6 +142,15 @@ const DeviceListComponent = () => {
           );
         })}
       </div>
+
+      {
+        devices.length === 0 && (
+          <div className="flex items-center justify-center h-96 flex-col">
+            <img src={EmptyStateIcon} alt="No fields found" />
+            <p className="text-lg text-gray-500">No fields found</p>
+          </div>
+        )
+      }
     </>
   );
 };

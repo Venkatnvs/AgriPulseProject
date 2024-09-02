@@ -17,3 +17,6 @@ export const partialUpdateDeviceApi = (id, formData) =>
     AXIOS_INSTANCE.patch(`/core/sensors/devices/${id}/`, formData);
 
 export const deleteDeviceApi = id => AXIOS_INSTANCE.delete(`/core/sensors/devices/${id}/`);
+
+export const fetchDeviceListForSelectApi = () =>
+    AXIOS_INSTANCE.get('/core/sensors/devices/select-list/');

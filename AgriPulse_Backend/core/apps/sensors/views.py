@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions, filters
 from .models import SoilSensor, Device
-from .serializers import SoilSensorSerializer,DeviceSerializer
+from .serializers import SoilSensorSerializer,DeviceSerializer, DeviceListSerializer
 
 class DeviceListCreate(generics.ListCreateAPIView):
     serializer_class = DeviceSerializer
@@ -41,3 +41,10 @@ class SoilSensorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         if getattr(self, 'swagger_fake_view', False):
             return SoilSensor.objects.none()
         return SoilSensor.objects.filter(user=self.request.user)
+    
+class DeviceSelectList(generics.ListAPIView):
+    serializer_class = DeviceListSerializer
+    permission_classes = [ permissions.IsAuthenticated ]
+
+    def get_queryset(self):
+        return Device.objects.filter(user=self.request.user)
