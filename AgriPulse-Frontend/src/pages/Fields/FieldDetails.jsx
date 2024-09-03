@@ -80,7 +80,7 @@ const FieldDetailsMain = ({ data, setFieldData = () => {} }) => {
 
   useEffect(() => {
     if (data?.main_coordinate) {
-      // fetchWeatherData();
+      fetchWeatherData();
     }
   }, [data]);
 
