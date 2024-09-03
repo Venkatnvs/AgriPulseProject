@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'core',
     'core.apps.fields',
     'core.apps.sensors',
+    'core.apps.dashboard',
 ]
 
 MIDDLEWARE = [
@@ -78,19 +79,19 @@ FRONTEND_URL = config('FRONTEND_URL')
 PASSWORD_RESET_TIMEOUT = 600
 
 # Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('POSTGRESQL_URL'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=config('POSTGRESQL_URL'),
+#         conn_max_age=600
+#     )
+# }
 
 # Cache
 CACHES = {

@@ -97,6 +97,11 @@ class FieldDeviceLinkView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = FieldLinkToDeviceSerializer
 
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Field.objects.none()
+        return Field.objects.filter(user=self.request.user)
+
     def post(self, request, pk):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

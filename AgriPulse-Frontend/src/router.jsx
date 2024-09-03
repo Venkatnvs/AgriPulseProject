@@ -1,3 +1,4 @@
+import MainAnalytics from "./pages/Analytics/MainAnalytics";
 import MainDashBoard from "./pages/DashBoard/MainDashBoard";
 import AddNewDevice from "./pages/Devices/AddNewDevice";
 import DeviceConfigurePage from "./pages/Devices/DeviceConfigurePage";
@@ -12,6 +13,11 @@ const routes = [
     name: 'root',
     path: '/dashboard',
     element: MainDashBoard,
+  },
+  {
+    name: 'analytics',
+    path: '/dashboard/analytics',
+    element: MainAnalytics,
   },
   {
     name: 'fields',

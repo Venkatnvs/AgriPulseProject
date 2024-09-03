@@ -35,6 +35,12 @@ class Device(models.Model):
     class Meta:
         ordering = ('-created_at',)
         unique_together = ('user', 'name')
+
+    @property
+    def get_sensor_count_from_configurations(self):
+        if not self.configurations:
+            return 0
+        return self.configurations.get('soil_sensors_count', 0)
     
     def __str__(self):
         return f"Device {self.device_id} for {self.user.email}"

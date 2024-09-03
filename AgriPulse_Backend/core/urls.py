@@ -3,4 +3,5 @@ from django.urls import path, include
 urlpatterns = [
     path('fields/', include('core.apps.fields.urls')),
     path('sensors/', include('core.apps.sensors.urls')),
+    path('dashboard/', include('core.apps.dashboard.urls')),
 ]
