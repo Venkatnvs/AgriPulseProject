@@ -12,14 +12,9 @@ import * as React from 'react';
 
 const CalendarDateRangePicker = ({
   className,
-  startdate,
-  enddate,
+  date,
   handleDateChange = () => {},
 }) => {
-  const [date, setDate] = React.useState({
-    from: startdate || addDays(new Date(2023, 0, 20), 10),
-    to: enddate || addDays(new Date(2023, 0, 20), 20),
-  });
   return (
     <div className={cn('grid gap-2', className)}>
       <Popover>
@@ -53,10 +48,7 @@ const CalendarDateRangePicker = ({
             mode='range'
             defaultMonth={date?.from}
             selected={date}
-            onSelect={changeDate => {
-              setDate(changeDate);
-              handleDateChange(changeDate)
-            }}
+            onSelect={handleDateChange}
             numberOfMonths={2}
           />
         </PopoverContent>

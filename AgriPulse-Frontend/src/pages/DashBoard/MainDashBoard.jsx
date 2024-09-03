@@ -7,9 +7,15 @@ import {
   MicrochipIcon,
   RadioTowerIcon,
 } from 'lucide-react';
-import { fetchDashBoardCardCounts } from '@/apis/dashboard';
+import {
+  fetchDashBoardCardCounts,
+  fetchDashBoardGraphData,
+} from '@/apis/dashboard';
 import CalendarDateRangePicker from '@/components/date-range-picker';
 import moment from 'moment';
+import BarAverageGraph from './components/charts/BarAverageGraph';
+import AreaGraphByDeviceAndFields from './components/charts/AreaGraphByDeviceAndFields';
+import PieChartForCropType from './components/charts/PieChartForCropType';
 
 const MainDashBoardContainer = ({
   countData,
@@ -68,10 +74,14 @@ const MainDashBoard = () => {
     sensors_readings: 0,
   });
 
-  const startDate = new Date(new Date().setDate(new Date().getDate() - 30));
-  const endDate = new Date();
+  const [chartData, setChartData] = useState([]);
 
-  const fetchCountData = async (from = startDate, to = endDate) => {
+  const [date, setDate] = useState({
+    from: new Date(new Date().setDate(new Date().getDate() - 30)),
+    to: new Date(),
+  });
+
+  const fetchCountData = async (from = date.from, to = date.to) => {
     try {
       const res = await fetchDashBoardCardCounts(
         moment(from).format('YYYY-MM-DD'),
@@ -85,12 +95,30 @@ const MainDashBoard = () => {
     }
   };
 
+  const fetchGraphData = async (from = date.from, to = date.to) => {
+    try {
+      const res = await fetchDashBoardGraphData(
+        moment(from).format('YYYY-MM-DD'),
+        moment(to).format('YYYY-MM-DD'),
+      );
+      if (res.status == 200) {
+        console.log(res?.data);
+        setChartData(res.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleDateChange = changeDate => {
+    setDate(changeDate);
     fetchCountData(changeDate?.from, changeDate?.to);
+    fetchGraphData(changeDate?.from, changeDate?.to);
   };
 
   useEffect(() => {
     fetchCountData();
+    fetchGraphData();
   }, []);
 
   return (
@@ -102,9 +130,8 @@ const MainDashBoard = () => {
           </h2>
           <div className='hidden items-center space-x-2 md:flex lg:flex'>
             <CalendarDateRangePicker
-              enddate={endDate}
-              startdate={startDate}
               handleDateChange={handleDateChange}
+              date={date}
             />
           </div>
         </div>
@@ -114,6 +141,25 @@ const MainDashBoard = () => {
         setCountData={setCountData}
         fetchCountData={fetchCountData}
       />
+      <div className='flex items-center justify-between space-y-2'>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 mt-5'>
+          <div className='col-span-full'>
+            {chartData?.chart1 && (
+              <BarAverageGraph chartData={chartData?.chart1} />
+            )}
+          </div>
+          <div className='col-span-4'>
+            {chartData?.chart2 && (
+              <AreaGraphByDeviceAndFields chartData={chartData?.chart2} />
+            )}
+          </div>
+          <div className='col-span-4 md:col-span-3'>
+            {chartData?.chart3 && (
+              <PieChartForCropType chartData={chartData?.chart3} />
+            )}
+          </div>
+        </div>
+      </div>
     </PageContainer>
   );
 };

@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import NumberTicker from '@/components/magicui/number-ticker';
 
 const OverViewCard = ({ title, icon, amount, description }) => {
   return (
@@ -16,7 +17,12 @@ const OverViewCard = ({ title, icon, amount, description }) => {
         {icon}
       </CardHeader>
       <CardContent>
-        <div className='text-2xl font-bold'>{amount}</div>
+        <div className='text-2xl font-bold'>
+          <NumberTicker 
+            value={amount}
+            delay={0.1}
+          />
+        </div>
         <p className='text-xs text-muted-foreground'>{description}</p>
       </CardContent>
     </Card>
