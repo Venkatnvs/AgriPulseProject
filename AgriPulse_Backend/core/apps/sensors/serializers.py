@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from .models import SoilSensor, Device
+from core.apps.fields.serializers import FieldSerializer
 
 class DeviceSerializer(serializers.ModelSerializer):
+    fields_data = FieldSerializer(many=True, read_only=True, source='fields')
+    
     class Meta:
         model = Device
         fields = '__all__'

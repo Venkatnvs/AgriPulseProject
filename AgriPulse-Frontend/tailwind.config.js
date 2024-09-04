@@ -94,6 +94,11 @@ module.exports = {
           "0%, 100%": { boxShadow: "0 0 0 0 var(--pulse-color)" },
           "50%": { boxShadow: "0 0 0 8px var(--pulse-color)" },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -101,6 +106,7 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         meteor: "meteor 5s linear infinite",
         pulse: "pulse var(--duration) ease-out infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
       },
     },
   },

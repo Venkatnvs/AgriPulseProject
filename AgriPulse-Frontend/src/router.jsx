@@ -1,3 +1,4 @@
+import AnalysisDetails from "./pages/Analytics/AnalysisDetails";
 import MainAnalytics from "./pages/Analytics/MainAnalytics";
 import MainDashBoard from "./pages/DashBoard/MainDashBoard";
 import AddNewDevice from "./pages/Devices/AddNewDevice";
@@ -7,6 +8,7 @@ import DeviceList from "./pages/Devices/DeviceList";
 import AddNewField from "./pages/Fields/AddNewField";
 import FieldDetails from "./pages/Fields/FieldDetails";
 import FieldList from "./pages/Fields/FieldList";
+import MainProfilePage from "./pages/Profile/MainProfilePage";
 
 const routes = [
   {
@@ -18,6 +20,11 @@ const routes = [
     name: 'analytics',
     path: '/dashboard/analytics',
     element: MainAnalytics,
+  },
+  {
+    name: 'analysis-details',
+    path: '/dashboard/analytics/:id',
+    element: AnalysisDetails,
   },
   {
     name: 'fields',
@@ -53,6 +60,11 @@ const routes = [
     name: 'device-config',
     path: '/dashboard/devices/:id/configure',
     element: DeviceConfigurePage,
+  },
+  {
+    name: 'profile',
+    path: '/dashboard/profile',
+    element: MainProfilePage,
   }
 ];
 
