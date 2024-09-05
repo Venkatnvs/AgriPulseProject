@@ -48,3 +48,31 @@ class DeviceSelectList(generics.ListAPIView):
 
     def get_queryset(self):
         return Device.objects.filter(user=self.request.user)
+
+class SoilSensorListByDevice(generics.ListAPIView):
+    serializer_class = SoilSensorSerializer
+    permission_classes = [ permissions.IsAuthenticated ]
+
+    def get_queryset(self):
+        device_id = self.kwargs['device_id']
+        return SoilSensor.objects.filter(device=device_id, device__user=self.request.user)
+
+class SoilSensorLatestData(generics.ListAPIView):
+    serializer_class = SoilSensorSerializer
+    permission_classes = [ permissions.IsAuthenticated ]
+
+    def get_queryset(self):
+        device_id = self.kwargs['device_id']
+        return SoilSensor.objects.filter(device=device_id, device__user=self.request.user).order_by('-timestamp')[:1]
+    
+class DeviceConfigure(generics.UpdateAPIView):
+    serializer_class = DeviceSerializer
+    permission_classes = [ permissions.IsAuthenticated ]
+
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Device.objects.none()
+        return Device.objects.filter(user=self.request.user)
+    
+    def perform_update(self, serializer):
+        serializer.save(is_configured=True)

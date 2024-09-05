@@ -7,6 +7,7 @@ from rest_framework.response import Response
 import requests
 from django.conf import settings
 from core.apps.sensors.models import Device
+from django.db.models import Q
 
 class FieldListCreate(generics.ListCreateAPIView):
     serializer_class = FieldSerializer
@@ -89,9 +90,11 @@ class FieldListSelect(generics.ListAPIView):
     def get_queryset(self):
         if getattr(self, 'swagger_fake_view', False):
             return Field.objects.none()
+        current_device = self.kwargs.get('device_id')
         return Field.objects.filter(
-            user=self.request.user,
-            devices__isnull=True
+            user=self.request.user
+        ).filter(
+            Q(devices__isnull=True) | Q(devices=current_device)
         )
 class FieldDeviceLinkView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]

@@ -15,11 +15,13 @@ import { useNavigate } from 'react-router-dom';
 import { BorderBeam } from '@/components/magicui/border-beam';
 import { Input } from '@/components/ui/input';
 import { useTheme } from '@/themes/theme-provider';
+import { useToast } from '@/components/ui/use-toast';
 
 const AnalysisComponent = () => {
   const navigate = useNavigate();
   const [deviceData, setDeviceData] = useState([]);
   const [search, setSearch] = useState('');
+  const { toast } = useToast();
 
   const { theme } = useTheme();
 
@@ -65,7 +67,13 @@ const AnalysisComponent = () => {
               key={index}
               className='relative cursor-pointer flex h-[200px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl'
               onClick={() => {
-                isConfigured ? navigate(`/dashboard/analytics/${device.id}`) : null;
+                isConfigured ? navigate(`/dashboard/analytics/${device.id}`) : (
+                  toast({
+                    title: 'Warning!',
+                    description: 'Device is not configured',
+                    variant: 'destructive',
+                  })
+                );
               }}
             >
               <span className='whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10'>

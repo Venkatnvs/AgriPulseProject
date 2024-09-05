@@ -38,7 +38,11 @@ const AnalysisDetails = () => {
           title='Analysis'
           description='View the full analysis of the device'
         />
-        <DetailedAnalysisComponent />
+        <DetailedAnalysisComponent
+          deviceData={deviceData}
+          fetchAnalysisData={fetchAnalysisData}
+          id={id}
+        />
       </div>
     </PageContainer>
   );

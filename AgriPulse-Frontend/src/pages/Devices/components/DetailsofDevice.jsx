@@ -36,12 +36,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import DeviceFinalConfigDialog from './DeviceFinalConfigDialog';
 
-const DetailsofDevice = ({ device }) => {
+const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showConfigure, setShowConfigure] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
@@ -189,7 +191,7 @@ const DetailsofDevice = ({ device }) => {
                             className='ml-4 py-1 bg-primary dark:bg-primary text-white dark:text-white'
                             pulseColor='#ff9800'
                             onClick={() =>
-                              navigate(`/dashboard/devices/${device.id}/configure`)
+                              setShowConfigure(true)
                             }
                           >
                             Configure
@@ -202,9 +204,52 @@ const DetailsofDevice = ({ device }) => {
                     )}
                   </div>
                 </div>
+                {
+                  showConfigure && (
+                    <DeviceFinalConfigDialog
+                      deviceData={device}
+                      openLinkDeviceModal={showConfigure}
+                      setOpenLinkDeviceModal={setShowConfigure}
+                      fetchDevice={fetchDevice}
+                    />
+                  )
+                }
                 <div className='flex space-x-2'>
                   <strong className='text-gray-700'>Active:</strong>
                   <span>{device.is_active ? 'Yes' : 'No'}</span>
+                </div>
+                <div>
+                  <div>
+                    <strong className='text-gray-700'>Fields:</strong>
+                    <span
+                      className='inline-block ml-2 text-sm text-primary cursor-pointer'
+                    >
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                          <PulsatingButton
+                            className='ml-4 py-0 text-sm bg-slate-400 dark:bg-slate-900 text-white dark:text-white'
+                            pulseColor='#a6a9ad'
+                            onClick={() =>
+                              navigate(`/dashboard/devices/${device.id}/configure`)
+                            }
+                          >
+                            Add Fields
+                          </PulsatingButton>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Click to configure device</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </span>
+                  </div>
+                  <ul className='list-disc list-inside mt-2 ml-8'>
+                    {device?.fields_data?.map((value, idx) => (
+                        <li key={idx} className='mb-1'>
+                          <strong>{value?.name}</strong>
+                        </li>
+                      )
+                    )}
+                  </ul>
                 </div>
                 <div>
                   <strong className='text-gray-700'>Configurations:</strong>

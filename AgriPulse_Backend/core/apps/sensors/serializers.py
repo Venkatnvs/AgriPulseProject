@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from .models import SoilSensor, Device
 from core.apps.fields.serializers import FieldSerializer
+from core.apps.fields.models import Field
 
 class DeviceSerializer(serializers.ModelSerializer):
-    fields_data = FieldSerializer(many=True, read_only=True, source='fields')
-    
+    fields_data = FieldSerializer(many=True, read_only=True, source='fields', required=False)
+    fields = serializers.PrimaryKeyRelatedField(queryset=Field.objects.all(), many=True, required=False)
+
     class Meta:
         model = Device
         fields = '__all__'
@@ -14,6 +16,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         new_validated_data = validated_data.copy()
         new_validated_data.pop('user', None)
+        new_validated_data.pop('fields', None)
         device = Device.objects.create(user=user, **new_validated_data)
         return device
     
@@ -22,7 +25,7 @@ class DeviceSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
         if fields is not None:
             instance.fields.set(fields)
-            instance.is_configured = True
+            # instance.is_configured = True
             instance.save()
         return instance
     

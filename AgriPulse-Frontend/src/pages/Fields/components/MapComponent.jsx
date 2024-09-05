@@ -76,7 +76,7 @@ const MapComponent = ({ selectedField, setSelectedField = () => {} }) => {
               rectangle: false,
               polygon: selectedField ? false : true,
               circle: false,
-              marker: false,
+              marker: true,
               polyline: false,
               circlemarker: false,
             }}

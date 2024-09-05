@@ -99,6 +99,11 @@ module.exports = {
             "offset-distance": "100%",
           },
         },
+        'pulse-red': {
+          '0%': { boxShadow: '0 0 0 0 rgba(255, 82, 82, 1)' },
+          '70%': { boxShadow: '0 0 0 10px rgba(255, 82, 82, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(255, 82, 82, 0)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -107,6 +112,7 @@ module.exports = {
         meteor: "meteor 5s linear infinite",
         pulse: "pulse var(--duration) ease-out infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        'pulse-red': 'pulse-red 2s infinite',
       },
     },
   },

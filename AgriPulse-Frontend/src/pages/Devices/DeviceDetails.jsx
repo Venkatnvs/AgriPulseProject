@@ -53,6 +53,7 @@ const DeviceDetails = () => {
         />
         <DetailsofDevice
             device={device}
+            fetchDevice={fetchDevice}
         />
       </div>
     </PageContainer>

@@ -40,7 +40,9 @@ const DeviceConfigurationPage = ({ device }) => {
   const fetchOptions = async () => {
     setLoading(true);
     try {
-      const res = await fetchFieldsForSelectApi();
+      const res = await fetchFieldsForSelectApi(
+        device?.id || id
+      );
       setFieldsList(res.data);
     } catch (error) {
       console.log(error);
@@ -50,16 +52,16 @@ const DeviceConfigurationPage = ({ device }) => {
   };
 
   useEffect(() => {
-    if (device?.is_configured) {
-      toast({
-        title: 'Warning!',
-        description: 'Device is already configured',
-      });
-      navigator('/dashboard/devices', { replace: true });
-    }
+    // if (device?.is_configured) {
+    //   toast({
+    //     title: 'Warning!',
+    //     description: 'Device is already configured',
+    //   });
+    //   navigator('/dashboard/devices', { replace: true });
+    // }
 
     fetchOptions();
-  }, [device]);
+  }, []);
 
   const onSubmit = async data => {
     setLoading(true);
@@ -141,7 +143,7 @@ const DeviceConfigurationPage = ({ device }) => {
                         <MultiSelect
                           options={fieldsList}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          defaultValue={device?.fields}
                           placeholder='Select fields...'
                           variant='outlined'
                           animation={1}
