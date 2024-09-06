@@ -1,6 +1,12 @@
 from rest_framework import generics, permissions, filters, serializers, status
 from .models import Field
-from .serializers import FieldSerializer, WeatherAndForecastSerializer, FieldListSelectSerializer, FieldLinkToDeviceSerializer
+from .serializers import (
+    FieldSerializer, 
+    WeatherAndForecastSerializer, 
+    FieldListSelectSerializer, 
+    FieldLinkToDeviceSerializer,
+    CropsDataSerializer
+)
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FieldFilter
 from rest_framework.response import Response
@@ -8,6 +14,9 @@ import requests
 from django.conf import settings
 from core.apps.sensors.models import Device
 from django.db.models import Q
+import os
+import csv
+from django.core.cache import cache
 
 class FieldListCreate(generics.ListCreateAPIView):
     serializer_class = FieldSerializer
@@ -121,3 +130,39 @@ class FieldDeviceLinkView(generics.GenericAPIView):
             return Response({"errors": "Device already linked"}, status=status.HTTP_400_BAD_REQUEST)
         field.devices.add(device)
         return Response({"message": "Device linked successfully"}, status=status.HTTP_200_OK)
+
+class CropsDataView(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated ]
+    serializer_class = CropsDataSerializer
+
+    def load_crop_data(self):
+        file_path = os.path.join(settings.BASE_DIR, 'datasets', 'crop_data.csv')
+        data = []
+
+        with open(file_path, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                name = row['CROP']
+                level = row['Level or Growth']
+                lower_percent_value = float(row['Lower % Value'].strip('%'))
+                upper_percent_value = float(row['Upper % value'].strip('%'))
+                lower_sensor_value = float(row['Lower Sensor Value'].strip('%'))
+                upper_sensor_value = float(row['Upper % value'].strip('%'))
+
+                avg_brack_point = (lower_percent_value + upper_percent_value) / 2
+                avg_value = (lower_sensor_value + upper_sensor_value) / 2
+
+                data.append({
+                    "name": f"{name} ({level})",
+                    "avg_brack_point": avg_brack_point,
+                    "avg_value": avg_value
+                })
+        return data
+    
+    def get(self, request):
+        data = cache.get('crop_data')
+        if not data:
+            data = self.load_crop_data()
+            cache.set('crop_data', data, 60*60)
+        serialized_data = self.get_serializer(data, many=True)
+        return Response(serialized_data.data, status=status.HTTP_200_OK)

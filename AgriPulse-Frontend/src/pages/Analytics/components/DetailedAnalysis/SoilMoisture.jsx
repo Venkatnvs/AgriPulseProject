@@ -31,7 +31,7 @@ const SoilMoisture = ({ id, deviceData }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchSoilMoistureData();
-    }, 10000);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -40,15 +40,28 @@ const SoilMoisture = ({ id, deviceData }) => {
       <div className='flex items-center justify-between mb-3'>
         <h5 className='text-xl font-semibold'>
           Sensor Data Cards
-          <div className='w-3 h-3 bg-red-500 rounded-full blob animate-pulse-red inline-block ml-2' />
-          <span className='ml-1 text-sm font-normal'>Live</span>
+          {
+            deviceData?.configurations?.soil_sensors_count === undefined && (
+              <span className='text-red-500'> (No sensor data available)</span>
+            )
+          }
+          { 
+            soilMoistureData && (Date.now() - soilMoistureData.timestamp > 120000) && (
+              <div className="flex items-center ml-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <span className="ml-1 text-sm font-normal">Live</span>
+              </div>
+            ) 
+          }
         </h5>
         <div className='flex items-center justify-center gap-2 text-sm'>
           <Button onClick={fetchSoilMoistureData} variant='secondary' size='sm'>
             <ReloadIcon className='w-5 h-5 mr-2' />
             Refresh Data
           </Button>
-          last updated at {new Date().toLocaleTimeString()}
+          last updated at {
+            soilMoistureData && (new Date(soilMoistureData?.timestamp).toLocaleTimeString()) || 'N/A'
+          }
         </div>
       </div>
       {soilMoistureData?.soil_moisture?.s1 === undefined && (
@@ -63,7 +76,7 @@ const SoilMoisture = ({ id, deviceData }) => {
           .map((_, index) => {
             const SMData =
               soilMoistureData?.soil_moisture?.[`s${index + 1}`] || 0;
-            const bgColor = SMData >= 50 ? 'bg-green-100' : 'bg-red-100';
+            const bgColor = SMData >= 50 ? 'bg-green-200' : 'bg-red-200';
             const darkBgColor =
               SMData >= 50 ? 'dark:bg-green-800' : 'dark:bg-red-800';
             const gradientColor =

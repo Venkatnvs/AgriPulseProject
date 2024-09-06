@@ -10,6 +10,7 @@ class Field(models.Model):
     description = models.CharField(max_length=200, blank=True, null=True)
     crop_type = models.CharField(max_length=100)
     geometry = models.JSONField() # GeoJSON
+    markers = models.JSONField(null=True, blank=True) # GeoJSON
     size = models.FloatField(help_text="Size of the field in acres")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

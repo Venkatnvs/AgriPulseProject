@@ -3,17 +3,29 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 import PageContainer from '@/components/layout/PageContainer';
 import TextHeader from '@/components/PageHeaders/TextHeader';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import DetailedAnalysisComponent from './components/DetailedAnalysisComponent';
+import { useToast } from '@/components/ui/use-toast';
 
 const AnalysisDetails = () => {
   const { id } = useParams();
   const [deviceData, setDeviceData] = useState([]);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const fetchAnalysisData = async () => {
     try {
       const res = await fetchDeviceApi(id);
       console.log(res.data);
+      if (!res.data?.is_configured) {
+        toast({
+          title: 'Device not configured',
+          description: 'Please configure the device to view the analysis',
+          variant: 'destructive',
+        });
+        navigate('/dashboard/analytics');
+        return;
+      }
       setDeviceData(res.data);
     } catch (error) {
       console.error(error);

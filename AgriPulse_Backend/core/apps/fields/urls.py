@@ -4,7 +4,8 @@ from .views import (
     FieldRetrieveUpdateDestroy,
     WeatherAndForecast,
     FieldListSelect,
-    FieldDeviceLinkView
+    FieldDeviceLinkView,
+    CropsDataView
 )
 
 urlpatterns = [
@@ -15,4 +16,6 @@ urlpatterns = [
     path('<int:pk>/link-device/', FieldDeviceLinkView.as_view(), name='field-link-device'),
 
     path('weather-and-forecast/', WeatherAndForecast.as_view(), name='weather-and-forecast'),
+
+    path('crops-data/', CropsDataView.as_view(), name='crops-data'),
 ]

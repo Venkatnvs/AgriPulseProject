@@ -1,0 +1,31 @@
+CROP,Level or Growth,Lower % Value,Upper % value,Lower Sensor Value,Upper Sensor Value
+Cotton,Germination,60%,70%,409.2,306.9
+Cotton,Flowering/Fruiting,55%,65%,460.35,358.05
+Soybeans,Germination,60%,70%,409.2,306.9
+Soybeans,Flowering,55%,65%,460.35,358.05
+Soybeans,Pod setting,60%,70%,409.2,306.9
+Soybeans,Seed filling,55%,65%,460.35,358.05
+Wheat,Germination,60%,70%,409.2,306.9
+Wheat,Tillering,55%,65%,460.35,358.05
+Wheat,Heading and flowering,60%,70%,409.2,306.9
+Wheat,Grain filling,55%,65%,460.35,358.05
+Tomatoes,Germination,60%,70%,409.2,306.9
+Tomatoes,Flowering and fruiting,55%,65%,460.35,358.05
+Potatoes,Germination,60%,70%,409.2,306.9
+Potatoes,Tuber formation,55%,65%,460.35,358.05
+Millet,Germination,60%,70%,409.2,306.9
+Millet,Vegetative growth,55%,65%,460.35,358.05
+Millet,Heading and flowering,60%,70%,409.2,306.9
+Millet,Grain filling,55%,65%,460.35,358.05
+Peanuts,Germination,60%,70%,409.2,306.9
+Peanuts,Pegging,55%,65%,460.35,358.05
+Peanuts,Pod filling,60%,70%,409.2,306.9
+Peanuts,Maturity,55%,65%,460.35,358.05
+Sugarcane,Planting,65%,75%,358.05,255.75
+Sugarcane,Early growth,60%,70%,409.2,306.9
+Sugarcane,Tillering,55%,65%,460.35,358.05
+Sugarcane,Maturity,60%,70%,409.2,306.9
+Legume,Germination,60%,70%,409.2,306.9
+Legume,Flowering,55%,65%,460.35,358.05
+Legume,Pod setting,60%,70%,409.2,306.9
+Legume,Seed filling,55%,65%,460.35,358.05

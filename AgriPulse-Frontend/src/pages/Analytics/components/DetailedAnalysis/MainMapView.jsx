@@ -19,6 +19,13 @@ const MapWithFields = ({ fieldDetails }) => {
       polygon.bindPopup(`<p>Area: ${fieldDetails[i]?.size} acres</p>`).openPopup();
 
       bounds.extend(polygon.getBounds());
+      if (fieldDetails[i]?.markers?.length) {
+        fieldDetails[i].markers.forEach(marker => {
+          const latLng = [marker.latLng.lat, marker.latLng.lng];
+          const leafletMarker = L.marker(latLng).addTo(map);
+          leafletMarker.bindPopup(`<p>${marker.label}</p>`).openPopup();
+        });
+      }
     }
     map.fitBounds(bounds);
   }, [map, fieldDetails]);

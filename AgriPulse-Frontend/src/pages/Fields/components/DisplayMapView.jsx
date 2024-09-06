@@ -20,6 +20,15 @@ const MapWithFields = ({ fieldDetails }) => {
 
     const bounds = polygon.getBounds();
     map.fitBounds(bounds);
+
+    if (fieldDetails?.markers?.length) {
+      fieldDetails.markers.forEach(marker => {
+        const latLng = [marker.latLng.lat, marker.latLng.lng];
+        const leafletMarker = L.marker(latLng).addTo(map);
+        leafletMarker.bindPopup(`<p>${marker.label}</p>`).openPopup();
+      });
+    }
+
   }, [map, fieldDetails]);
 
   return null;

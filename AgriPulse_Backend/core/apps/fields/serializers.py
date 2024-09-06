@@ -9,7 +9,7 @@ class FieldSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Field
-        fields = ['id', 'user', 'name', 'description', 'crop_type', 'geometry', 'size', 'created_at', 'updated_at', 'main_coordinate', 'map_tile_url', 'linked_devices']
+        fields = ['id', 'user', 'name', 'description', 'crop_type', 'geometry', 'size', 'created_at', 'updated_at', 'main_coordinate', 'map_tile_url', 'linked_devices', 'markers']
         read_only_fields = ['id' ,'user', 'created_at', 'updated_at', 'main_coordinate', 'map_tile_url', 'linked_devices']
 
     def get_main_coordinate(self, obj):
@@ -64,3 +64,8 @@ class FieldLinkToDeviceSerializer(serializers.Serializer):
         if not Device.objects.filter(id=value, user=self.context['request'].user).exists():
             raise serializers.ValidationError("Device not found")
         return value
+
+class CropsDataSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    avg_brack_point = serializers.FloatField()
+    avg_value = serializers.FloatField()

@@ -46,11 +46,9 @@ class SoilSensorSerializer(serializers.ModelSerializer):
         read_only_fields = ('device', 'timestamp')
 
     def create(self, validated_data):
-        print(self.context['request'].current_device)
         device = self.context['request'].current_device
         new_validated_data = validated_data.copy()
         new_validated_data.pop('user', None)
-        print(new_validated_data, validated_data)
         sensor_data = SoilSensor.objects.create(device=device, **new_validated_data)
         return sensor_data
     

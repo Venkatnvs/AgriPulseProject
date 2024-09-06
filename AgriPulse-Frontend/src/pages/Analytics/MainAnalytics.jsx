@@ -76,7 +76,7 @@ const AnalysisComponent = () => {
                 );
               }}
             >
-              <span className='whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-3xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10'>
+              <span className='whitespace-pre-wrap bg-clip-text text-center text-3xl font-semibold leading-none text-transparent bg-slate-700 dark:bg-white'>
                 {device?.name}
               </span>
               <BorderBeam size={250} duration={10} delay={8} />

@@ -20,15 +20,19 @@ import moment from 'moment';
 import { MagicCard } from '@/components/magicui/magic-card';
 import Meteors from '@/components/magicui/meteors';
 import { useTheme } from '@/themes/theme-provider';
-import { Circle, CircleDot, Dot, Trash } from 'lucide-react';
+import { Circle, CircleDot, Delete, Dot, Trash } from 'lucide-react';
 import { formatText } from '../scripts/utils';
 import { EmptyStateIcon } from '@/constants/Icons/icons';
+import DeleteDeviceDialog from './DeleteDeviceDialog';
 
 const DeviceListComponent = () => {
   const [devices, setDevices] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const { theme } = useTheme();
+
+  const [showDelete, setShowDelete] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -55,10 +59,6 @@ const DeviceListComponent = () => {
     fetchData();
   }, []);
 
-  const handleDelete = async id => {
-    console.log(id);
-  };
-
   return (
     <>
       <div className='flex w-full'>
@@ -69,6 +69,19 @@ const DeviceListComponent = () => {
           onChange={handleSearch}
         />
       </div>
+
+      {
+        showDelete && (
+          <DeleteDeviceDialog
+            showDelete={showDelete}
+            setShowDelete={setShowDelete}
+            selectedDevice={selectedDevice}
+            fetchData={fetchData}
+            setSelectedDevice={setSelectedDevice}
+            />
+        )
+      }
+
       <div className='grid flex-1 gap-4 overflow-auto md:grid-cols-2 lg:grid-cols-4 w-full h-full'>
         {devices.map((device, index) => {
           const isConfigured = device.is_configured;
@@ -95,6 +108,20 @@ const DeviceListComponent = () => {
                 className='flex justify-between'
               >
                 <CardTitle>{device?.name}</CardTitle>
+                <Button
+                  variant='destructive'
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedDevice(device);
+                    setShowDelete(true);
+                  }}
+                  size='sm'
+                  className='p-1 h-7 w-7 m-1 rounded-full inline-flex items-center justify-center absolute top-0 right-0'
+                >
+                  <Trash 
+                    className='h-4 w-4'
+                  />
+                </Button>
               </CardHeader>
               <CardContent
                 onClick={() => {

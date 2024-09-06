@@ -6,6 +6,7 @@ import 'leaflet-draw/dist/leaflet.draw.css';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import 'leaflet-geosearch/dist/geosearch.css';
 import { calculateArea, MetersAreaToAcres } from '../scripts/utils';
+import L from 'leaflet';
 
 const SearchField = () => {
   const map = useMap();
@@ -33,26 +34,87 @@ const SearchField = () => {
   return null;
 };
 
-const MapComponent = ({ selectedField, setSelectedField = () => {} }) => {
+const MapComponent = ({
+  selectedField,
+  setSelectedField = () => {},
+  markers,
+  setMarkers = () => {},
+  setCurrentStep = () => {},
+}) => {
+  
+  const isMarkerInsidePolygon = (
+    latLng,
+    polygonCoordinates = selectedField?.coordinates,
+  ) => {
+    console.log(polygonCoordinates);
+    if (!polygonCoordinates) return false;
+    const polygon = L.polygon(polygonCoordinates);
+    return polygon.getBounds().contains(latLng);
+  };
+
   const handleDrawCreated = e => {
     const layer = e.layer;
-    const shape = layer.toGeoJSON();
-    const latLngs = layer.getLatLngs()[0];
-    const area = calculateArea(latLngs);
-    const acers = MetersAreaToAcres(area);
+    if (layer instanceof L.Marker) {
+      const latLng = layer.getLatLng();
 
-    setSelectedField({
-      coordinates: latLngs,
-      size: acers,
-      geometry: shape.geometry,
-    });
+      if (selectedField && !isMarkerInsidePolygon(latLng)) {
+        alert('Marker must be placed inside the selected field.');
+        return;
+      }
 
-    // Bind a popup to the polygon and open it
-    layer.bindPopup(`<p>Area: ${acers} acres</p>`).openPopup();
+      setMarkers(prevMarkers => {
+        const markerCount = prevMarkers?.length;
+        const markerExists = prevMarkers.some(
+          marker => marker.id === markerCount && marker.latLng === latLng,
+        );
+        if (!markerExists) {
+          const newMarkerCount = markerCount + 1;
+          const label = `Sensor ${newMarkerCount}`;
+          layer.bindPopup(`<p>${label}</p>`).openPopup();
+
+          // Close the popup after 3 seconds
+          setTimeout(() => {
+            layer.closePopup();
+          }, 1800);
+
+          return [...prevMarkers, { id: newMarkerCount, label, latLng }];
+        }
+        return prevMarkers;
+      });
+      setCurrentStep(3)
+    } else if (layer instanceof L.Polygon) {
+      const shape = layer.toGeoJSON();
+      const latLngs = layer.getLatLngs()[0];
+      const area = calculateArea(latLngs);
+      const acers = MetersAreaToAcres(area);
+
+      setSelectedField({
+        coordinates: latLngs,
+        size: acers,
+        geometry: shape.geometry,
+      });
+      setCurrentStep(2);
+      layer.bindPopup(`<p>Area: ${acers} acres</p>`).openPopup();
+      setTimeout(() => {
+        layer.closePopup();
+      }, 2000);
+    }
   };
 
   const handleDrawDelete = e => {
-    setSelectedField(null);
+    const layers = e.layers;
+    layers.eachLayer(layer => {
+      if (layer instanceof L.Marker) {
+        const latLng = layer.getLatLng();
+        setMarkers(prevMarkers =>
+          prevMarkers.filter(
+            marker =>
+              marker.latLng.lat !== latLng.lat &&
+              marker.latLng.lng !== latLng.lng,
+          ),
+        );
+      }
+    });
   };
 
   return (
@@ -76,7 +138,7 @@ const MapComponent = ({ selectedField, setSelectedField = () => {} }) => {
               rectangle: false,
               polygon: selectedField ? false : true,
               circle: false,
-              marker: true,
+              marker: selectedField && markers?.length < 15,
               polyline: false,
               circlemarker: false,
             }}
