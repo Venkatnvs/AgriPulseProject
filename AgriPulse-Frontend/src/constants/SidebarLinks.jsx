@@ -25,7 +25,7 @@ export const navItems = [
   },
   {
     title: 'Profile',
-    href: '/dashboard/profile',
+    href: '/profile',
     icon: 'profile',
     label: 'profile',
   },

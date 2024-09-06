@@ -42,7 +42,9 @@ const UserNavbar = () => {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigate('/profile')}
+            >
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>

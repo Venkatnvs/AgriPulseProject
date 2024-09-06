@@ -21,7 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { FieldSelectImage } from '@/constants/Images';
+import { FieldSelectImage, MarkerForSensorsIcon } from '@/constants/Images';
 import { useNavigate } from 'react-router-dom';
 import formatErrorMessages from '@/lib/formatErrorMessages';
 import { createFieldApi } from '@/apis/fields';
@@ -152,7 +152,7 @@ const AddFieldForm = ({ currentStep, selectedField, markers }) => {
                 Add a sensor to the selected land as shown below
               </p>
               <img
-                src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202010/maps_googlgele_pixabay_1200x768.png?size=1200:675"
+                src={MarkerForSensorsIcon}
                 alt='Map Selection'
                 className='w-full h-full max-w-[300px] max-h-[300px] mx-auto'
               />

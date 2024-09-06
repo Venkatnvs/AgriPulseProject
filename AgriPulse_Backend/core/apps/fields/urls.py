@@ -5,7 +5,8 @@ from .views import (
     WeatherAndForecast,
     FieldListSelect,
     FieldDeviceLinkView,
-    CropsDataView
+    CropsDataView,
+    CropTypeChangeView
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('weather-and-forecast/', WeatherAndForecast.as_view(), name='weather-and-forecast'),
 
     path('crops-data/', CropsDataView.as_view(), name='crops-data'),
+    path('<int:device_id>/crop-type-change/', CropTypeChangeView.as_view(), name='crop-type-change')
 ]

@@ -63,7 +63,7 @@ const routes = [
   },
   {
     name: 'profile',
-    path: '/dashboard/profile',
+    path: '/profile',
     element: MainProfilePage,
   }
 ];

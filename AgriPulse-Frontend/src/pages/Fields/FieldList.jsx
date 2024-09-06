@@ -118,7 +118,7 @@ const FieldListContainer = () => {
             </CardContent>
             <CardFooter className='flex justify-between gap-3'>
               <Button
-                className='text-xs'
+                className='text-xs rounded-full h-7 w-7 p-0'
                 size='sm'
                 variant='destructive'
                 onClick={() => {

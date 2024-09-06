@@ -69,3 +69,8 @@ class CropsDataSerializer(serializers.Serializer):
     name = serializers.CharField()
     avg_brack_point = serializers.FloatField()
     avg_value = serializers.FloatField()
+
+class DeviceBasedFieldsCropTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Field
+        fields = ['id', 'crop_type']

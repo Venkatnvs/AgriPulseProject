@@ -5,7 +5,8 @@ from .serializers import (
     WeatherAndForecastSerializer, 
     FieldListSelectSerializer, 
     FieldLinkToDeviceSerializer,
-    CropsDataSerializer
+    CropsDataSerializer,
+    DeviceBasedFieldsCropTypeSerializer
 )
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import FieldFilter
@@ -166,3 +167,27 @@ class CropsDataView(generics.ListAPIView):
             cache.set('crop_data', data, 60*60)
         serialized_data = self.get_serializer(data, many=True)
         return Response(serialized_data.data, status=status.HTTP_200_OK)
+
+class CropTypeChangeView(generics.UpdateAPIView):
+    serializer_class = DeviceBasedFieldsCropTypeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Field.objects.none()
+        return Field.objects.filter(user=self.request.user)
+
+    def update(self, request, device_id, *args, **kwargs):
+        crop_type = request.data.get('crop_type')
+        try:
+            device = Device.objects.get(id=device_id, user=request.user)
+        except Device.DoesNotExist:
+            return Response({"errors": "Device not found"}, status=status.HTTP_404_NOT_FOUND)
+        fields = Field.objects.filter(
+            user=request.user,
+            devices=device_id
+        )
+        for field in fields:
+            field.crop_type = crop_type
+            field.save()
+        return Response({"message": "Crop type updated successfully"}, status=status.HTTP_200_OK)
