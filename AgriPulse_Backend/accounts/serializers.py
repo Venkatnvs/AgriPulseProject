@@ -80,6 +80,9 @@ class CustomTokenObtainPairSerializer(serializers.Serializer):
             if not user.is_otp_verified:
                 raise serializers.ValidationError('User account is not verified.')
             
+            user.last_login = timezone.now()
+            user.save()
+            
             refresh = RefreshToken.for_user(user)
             return {
                 'id': user.id,

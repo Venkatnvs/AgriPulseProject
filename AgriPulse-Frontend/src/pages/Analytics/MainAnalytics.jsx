@@ -16,6 +16,7 @@ import { BorderBeam } from '@/components/magicui/border-beam';
 import { Input } from '@/components/ui/input';
 import { useTheme } from '@/themes/theme-provider';
 import { useToast } from '@/components/ui/use-toast';
+import { EmptyStateIcon } from '@/constants/Icons/icons';
 
 const AnalysisComponent = () => {
   const navigate = useNavigate();
@@ -84,6 +85,16 @@ const AnalysisComponent = () => {
           );
         })}
       </div>
+      {
+        deviceData.length === 0 && (
+          <div className="flex items-center justify-center h-96 flex-col">
+            <img src={EmptyStateIcon} alt="No Devices found" />
+            <p className="text-lg text-gray-500">
+              No Devices found for Analytics 📊
+            </p>
+          </div>
+        )
+      }
     </>
   );
 };

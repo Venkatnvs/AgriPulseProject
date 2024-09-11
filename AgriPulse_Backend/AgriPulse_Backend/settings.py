@@ -71,7 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AgriPulse_Backend.wsgi.application'
 
-SITE_NAME = 'AgriPulse'
+SITE_NAME = 'Krishi Pragya'
 SITE_VERSION = 'v1'
 
 FRONTEND_URL = config('FRONTEND_URL')

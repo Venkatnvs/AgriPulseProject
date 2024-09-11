@@ -32,6 +32,7 @@ import {
 import EmptyStateIcon from '../../assets/icons/emptyState.svg';
 import NewDeviceIcon from '../../assets/icons/newDevice.svg';
 import LinkUnlinkIcon from '../../assets/icons/LinkUnlink.gif';
+import NoDataFoundIcon from '../../assets/icons/noDataFound.svg';
 
 export const Icons = {
   dashboard: LayoutDashboardIcon,
@@ -85,5 +86,6 @@ export const Icons = {
 export {
   EmptyStateIcon,
   NewDeviceIcon,
-  LinkUnlinkIcon
+  LinkUnlinkIcon,
+  NoDataFoundIcon,
 };

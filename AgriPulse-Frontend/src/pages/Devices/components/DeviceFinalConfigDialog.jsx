@@ -62,7 +62,7 @@ const DeviceFinalConfigDialog = ({
       console.log(error);
       toast({
         title: 'Error!',
-        description: formatErrorMessages(error?.response?.data),
+        description: formatErrorMessages(error?.response?.data?.device_id || error?.response?.data),
         variant: 'destructive',
       });
     } finally {

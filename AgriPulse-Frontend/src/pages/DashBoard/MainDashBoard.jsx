@@ -16,6 +16,7 @@ import moment from 'moment';
 import BarAverageGraph from './components/charts/BarAverageGraph';
 import AreaGraphByDeviceAndFields from './components/charts/AreaGraphByDeviceAndFields';
 import PieChartForCropType from './components/charts/PieChartForCropType';
+import { NoDataFoundIcon } from '@/constants/Icons/icons';
 
 const MainDashBoardContainer = ({
   countData,
@@ -160,6 +161,18 @@ const MainDashBoard = () => {
           </div>
         </div>
       </div>
+      {!chartData?.chart1 && !chartData?.chart2 && !chartData?.chart3 && (
+        <div className='flex items-center justify-center h-80 w-full flex-col gap-2'>
+          <img
+            src={NoDataFoundIcon}
+            alt='No Data'
+            className='h-52 w-52 object-cover'
+          />
+          <p className='text-lg text-gray-500'>
+            No Data Found for the selected date range 📅 to show Details
+          </p>
+        </div>
+      )}
     </PageContainer>
   );
 };

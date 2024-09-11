@@ -39,7 +39,7 @@ const PieChartForCropType = ({ chartData }) => {
     return {
       ...item,
       count: parseInt(item.count),
-      fill: `var(--color-${item.crop_type})`,
+      fill: `var(--color-${item.crop_type.toLowerCase().replace(' ', '-')})`,
     };
   });
 

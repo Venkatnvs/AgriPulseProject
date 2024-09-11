@@ -173,8 +173,8 @@ const DeviceListComponent = () => {
       {
         devices.length === 0 && (
           <div className="flex items-center justify-center h-96 flex-col">
-            <img src={EmptyStateIcon} alt="No fields found" />
-            <p className="text-lg text-gray-500">No fields found</p>
+            <img src={EmptyStateIcon} alt="No Devices found" />
+            <p className="text-lg text-gray-500">No Devices found</p>
           </div>
         )
       }

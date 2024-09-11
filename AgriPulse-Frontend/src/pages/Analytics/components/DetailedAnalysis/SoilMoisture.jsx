@@ -31,6 +31,16 @@ const SoilMoisture = ({ id, deviceData }) => {
   const [threshold, setThreshold] = useState(50);
   const { toast } = useToast();
 
+  const [selectedCrop, setSelectedCrop] = useState(
+    deviceData?.fields_data?.[0]?.crop_type || 'Change the crop type',
+  );
+
+  useEffect(() => {
+    if (deviceData?.fields_data?.[0]?.crop_type) {
+      setSelectedCrop(deviceData.fields_data[0].crop_type);
+    }
+  }, [deviceData]);
+
   const fetchSoilMoistureData = async () => {
     try {
       const res = await fetchLatestDeviceSensorsApi(id);
@@ -90,21 +100,30 @@ const SoilMoisture = ({ id, deviceData }) => {
   };
   return (
     <>
-      <div className='flex items-center justify-between mb-4'>
-        <h5 className='text-xl font-semibold'>
-          Sensor Data Cards
-          {deviceData?.configurations?.soil_sensors_count === undefined && (
-            <span className='text-red-500'> (No sensor data available)</span>
-          )}
-          {soilMoistureData &&
-            Date.now() - new Date(soilMoistureData.timestamp).getTime() < 120000 && (
-              <div className='flex items-center ml-2'>
-                <div className='w-3 h-3 bg-red-500 rounded-full animate-pulse-red' />
-                <span className='ml-1 text-sm font-normal'>Live</span>
-              </div>
-          )}
-        </h5>
-        <div>
+      <div className='space-y-4 md:space-y-0 md:flex md:items-center md:justify-between mb-4'>
+        <div className='space-y-2 md:space-y-0'>
+          <h5 className='text-lg md:text-xl font-semibold flex items-center flex-wrap'>
+            Sensor Data Cards
+            {deviceData?.configurations?.soil_sensors_count === undefined && (
+              <span className='text-red-500 text-sm md:text-base ml-2'>
+                {' '}
+                (No sensor data available)
+              </span>
+            )}
+            {soilMoistureData &&
+              Date.now() - new Date(soilMoistureData.timestamp).getTime() <
+                120000 && (
+                <div className='flex items-center ml-2'>
+                  <div className='w-2 h-2 md:w-3 md:h-3 bg-red-500 rounded-full animate-pulse-red' />
+                  <span className='ml-1 text-xs md:text-sm font-normal'>
+                    Live
+                  </span>
+                </div>
+              )}
+          </h5>
+        </div>
+
+        <div className='mt-2 md:mt-0'>
           <Select
             onValueChange={value => {
               if (value === 'other') {
@@ -114,15 +133,14 @@ const SoilMoisture = ({ id, deviceData }) => {
                 setThreshold(crop.avg_brack_point);
               }
               changeCropType(id, { crop_type: value });
+              setSelectedCrop(value);
             }}
-            defaultValue={
-              deviceData?.fields_data?.[0]?.crop_type || 'Change the crop type'
-            }
+            value={selectedCrop}
           >
-            <SelectTrigger className='w-52'>
+            <SelectTrigger className='w-full md:w-52'>
               <SelectValue placeholder='Change the crop type' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='max-h-[40vh] overflow-y-auto min-h-[150px]'>
               {cropsData.map((crop, index) => (
                 <SelectItem key={index} value={crop.name}>
                   {crop.name[0].toUpperCase() + crop.name.slice(1)}
@@ -134,19 +152,20 @@ const SoilMoisture = ({ id, deviceData }) => {
             </SelectContent>
           </Select>
         </div>
-        <div className='flex items-center justify-center gap-2 text-sm'>
+
+        <div className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center gap-2 text-xs md:text-sm mt-2 md:mt-0'>
           <Button
             onClick={fetchSoilMoistureData}
             variant='secondary'
             size='sm'
-            className='p-1'
+            className='p-1 w-full md:w-auto'
           >
-            <ReloadIcon className='w-5 h-5 mr-2' />
-            Refresh
+            <ReloadIcon className='w-4 h-4 md:w-5 md:h-5 mr-2' />
+            <span className='inline-flex items-center gap-1'>Refresh</span>
           </Button>
-          <div className='flex flex-row items-center gap-1'>
-            last updated at:
-            <Badge className='font-semibold'>
+          <div className='flex flex-col md:flex-row items-start md:items-center gap-1 w-full md:w-auto'>
+            <span>last updated at:</span>
+            <Badge className='font-semibold text-xs md:text-sm w-full md:w-auto text-center'>
               {(soilMoistureData &&
                 moment(soilMoistureData.timestamp).format(
                   'MMM Do YYYY, h:mm:ss a',
