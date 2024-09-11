@@ -2,6 +2,7 @@ import { Breadcrumbs } from '@/components/Breadcrumbs'
 import PageContainer from '@/components/layout/PageContainer'
 import TextHeader from '@/components/PageHeaders/TextHeader';
 import React from 'react'
+import ProfileDetails from './components/ProfileDetails';
 
 const breadcrumbItems = [
   { title: 'Dashboard', link: '/dashboard' },
@@ -18,6 +19,7 @@ const MainProfilePage = () => {
           title='Profile'
           description='View and edit your profile information'
         />
+        <ProfileDetails />
       </div>
     </PageContainer>
   )

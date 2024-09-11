@@ -85,7 +85,7 @@ const MainDashBoard = () => {
     try {
       const res = await fetchDashBoardCardCounts(
         moment(from).format('YYYY-MM-DD'),
-        moment(to).format('YYYY-MM-DD'),
+        moment(to).add(1, 'days').format('YYYY-MM-DD'),
       );
       if (res.status == 200) {
         setCountData(res.data);
@@ -99,7 +99,7 @@ const MainDashBoard = () => {
     try {
       const res = await fetchDashBoardGraphData(
         moment(from).format('YYYY-MM-DD'),
-        moment(to).format('YYYY-MM-DD'),
+        moment(to).add(1, 'days').format('YYYY-MM-DD'),
       );
       if (res.status == 200) {
         console.log(res?.data);

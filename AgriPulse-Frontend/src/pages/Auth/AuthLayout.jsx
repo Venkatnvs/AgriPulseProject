@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SITE_NAME } from '@/constants/BaseAxios';
 import { MainLogo, AuthBgImage } from '@/constants/Images';
 import ThemeToggle from '@/themes/theme-toggle';
 import React from 'react';
@@ -27,18 +28,21 @@ const AuthLayout = ({ children }) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               filter: 'brightness(0.9)',
-              borderImage: 'fill 0 linear-gradient(#0001, #000A00)',
+              borderImage: 'fill 20 linear-gradient(#0001, #000A00)',
             }}
           />
-          <div className='relative z-20 flex items-center text-lg font-medium'>
+          <div className='relative z-20 flex items-center text-lg font-medium rounded-md w-fit px-2'>
             <img
               src={MainLogo}
               alt='logo'
-              className='max-w-[200px] w-auto h-auto mb-4 rounded-md'
+              className='max-w-[200px] w-16 h-16 my-1 rounded-md'
               style={{
                 filter: 'drop-shadow(0 10 3px #000)',
               }}
             />
+            <h2 className='text-3xl font-semibold text-white font-oswald'>
+              {SITE_NAME}
+            </h2>
           </div>
           <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
@@ -52,12 +56,15 @@ const AuthLayout = ({ children }) => {
         <div className='flex h-full items-center p-4 lg:p-8 flex-col'>
           <header className='sticky inset-x-0 top-0 w-full'>
             <nav className='flex items-center justify-between px-2 lg:px-4 py-1 md:justify-end gap-2 lg:gap-5'>
-              <div className='flex items-center justify-between w-full'>
+              <div className='flex items-center w-full'>
                 <img
                   src={MainLogo}
                   alt='logo'
                   className='max-w-[150px] w-auto h-12 lg:hidden'
                 />
+                <h2 className='text-2xl text-primary font-semibold lg:text-3xl lg:hidden font-oswald'>
+                  {SITE_NAME}
+                </h2>
               </div>
               <Button
                 as={Link}
