@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { ArrowRightIcon } from 'lucide-react';
+import { ArrowRightIcon, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { z } from 'zod';
@@ -19,13 +19,17 @@ import { Link } from 'react-router-dom';
 import { useAuthContext } from '@/context/auth-context';
 import { useToast } from '@/components/ui/use-toast';
 import formatErrorMessages from '@/lib/formatErrorMessages';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import { PhoneInput } from '@/components/phone-input';
 
 const formSchema = z.object({
   full_name: z.string().nonempty({ message: 'Full name is required' }),
   phone_number: z
     .string()
     .nonempty({ message: 'Phone number is required' })
-    .min(10, { message: 'Phone number must be at least 10 characters' }),
+    .min(10, { message: 'Phone number must be at least 10 characters' })
+    .max(15, { message: 'Phone number must not exceed 15 characters' })
+    .refine(isValidPhoneNumber, { message: "Invalid phone number" }),
   email: z.string().email({ message: 'Enter a valid email address' }),
   password: z
     .string()
@@ -36,7 +40,13 @@ const MainSignupForm = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { setEmail, setSignUpCurrentStep } = useAuthContext();
-  const { toast } = useToast()
+  const { toast } = useToast();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const form = useForm({
     mode: 'onChange',
@@ -56,7 +66,7 @@ const MainSignupForm = () => {
           title: 'Success!',
           description: 'Please check your email for a verification code',
         });
-      }else{
+      } else {
         throw res?.response?.data || 'An error occurred';
       }
     } catch (error) {
@@ -68,6 +78,7 @@ const MainSignupForm = () => {
       });
     } finally {
       setLoading(false);
+      form.setValue('password', '');
     }
   };
 
@@ -112,10 +123,10 @@ const MainSignupForm = () => {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input
-                    type='tel'
-                    placeholder='Enter your phone number...'
+                  <PhoneInput 
+                    placeholder="Enter a phone number"
                     disabled={loading}
+                    defaultCountry="IN"
                     {...field}
                   />
                 </FormControl>
@@ -148,14 +159,35 @@ const MainSignupForm = () => {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel htmlFor="id_password">Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
-                    placeholder='Enter your password...'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <div className='relative'>
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder='Enter your password...'
+                      disabled={loading}
+                      {...field}
+                      className='pr-10'
+                      id="id_password"
+                    />
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='sm'
+                      className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                      onClick={togglePasswordVisibility}
+                      disabled={loading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className='h-4 w-4 text-muted-foreground' />
+                      ) : (
+                        <Eye className='h-4 w-4 text-muted-foreground' />
+                      )}
+                      <span className='sr-only'>
+                        {showPassword ? 'Hide password' : 'Show password'}
+                      </span>
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

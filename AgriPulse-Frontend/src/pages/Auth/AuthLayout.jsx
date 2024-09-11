@@ -28,7 +28,7 @@ const AuthLayout = ({ children }) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               filter: 'brightness(0.9)',
-              borderImage: 'fill 20 linear-gradient(#0001, #000A00)',
+              borderImage: 'fill 0 linear-gradient(#0001, #000A00)',
             }}
           />
           <div className='relative z-20 flex items-center text-lg font-medium rounded-md w-fit px-2'>
@@ -37,7 +37,7 @@ const AuthLayout = ({ children }) => {
               alt='logo'
               className='max-w-[200px] w-16 h-16 my-1 rounded-md'
               style={{
-                filter: 'drop-shadow(0 10 3px #000)',
+                filter: 'drop-shadow(0 0 3px #000)',
               }}
             />
             <h2 className='text-3xl font-semibold text-white font-oswald'>

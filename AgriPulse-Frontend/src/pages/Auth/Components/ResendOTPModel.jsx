@@ -72,6 +72,7 @@ const ResendOTPModel = ({ children }) => {
       });
     } finally {
       setLoading(false);
+      form.setValue('email', '');
     }
   };
 

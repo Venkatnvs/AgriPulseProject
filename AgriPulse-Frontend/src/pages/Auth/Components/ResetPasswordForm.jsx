@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { useDispatch } from 'react-redux';
 import { Button } from '@/components/ui/button';
-import { ArrowBigRightDashIcon } from 'lucide-react';
+import { ArrowBigRightDashIcon, Eye, EyeOff } from 'lucide-react';
 import formatErrorMessages from '@/lib/formatErrorMessages';
 import { useNavigate, useParams } from 'react-router-dom';
 import { resetPassword } from '@/store/actions/authActions';
@@ -25,7 +25,7 @@ const formSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters' }),
   confirmPassword: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters' })
+    .min(8, { message: 'Password must be at least 8 characters' }),
 });
 
 const ResetPasswordForm = () => {
@@ -34,6 +34,17 @@ const ResetPasswordForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const togglePassword2Visibility =() => {
+    setShowPassword2(!showPassword2);
+  }
 
   const form = useForm({
     mode: 'onChange',
@@ -56,12 +67,12 @@ const ResetPasswordForm = () => {
         form.reset();
         toast({
           title: 'Success !',
-          description: 'Password reset successfully, login in'
+          description: 'Password reset successfully, login in',
         });
         setTimeout(() => {
           navigation('/login');
         }, 500);
-      }else{
+      } else {
         throw res?.response?.data || 'An error occurred';
       }
     } catch (error) {
@@ -73,6 +84,7 @@ const ResetPasswordForm = () => {
       });
     } finally {
       setLoading(false);
+      form.setValue('confirmPassword', '');
     }
   };
 
@@ -90,21 +102,44 @@ const ResetPasswordForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='w-full space-y-2'
+          className='w-full space-y-3'
         >
           <FormField
             control={form.control}
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel
+                  htmlFor='id_password'
+                >Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
-                    placeholder='Enter your new password...'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <div className='relative'>
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder='Enter your password...'
+                      disabled={loading}
+                      {...field}
+                      className='pr-10'
+                      id='id_password'
+                    />
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='sm'
+                      className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                      onClick={togglePasswordVisibility}
+                      disabled={loading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className='h-4 w-4 text-muted-foreground' />
+                      ) : (
+                        <Eye className='h-4 w-4 text-muted-foreground' />
+                      )}
+                      <span className='sr-only'>
+                        {showPassword ? 'Hide password' : 'Show password'}
+                      </span>
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,14 +151,37 @@ const ResetPasswordForm = () => {
             name='confirmPassword'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel
+                  htmlFor='id_password2'
+                >Confirm Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
-                    placeholder='Re-enter your new password...'
-                    disabled={loading}
-                    {...field}
-                  />
+                <div className='relative'>
+                    <Input
+                      type={showPassword2 ? 'text' : 'password'}
+                      placeholder='Enter your password...'
+                      disabled={loading}
+                      {...field}
+                      className='pr-10'
+                      id='id_password2'
+                    />
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='sm'
+                      className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                      onClick={togglePassword2Visibility}
+                      disabled={loading}
+                    >
+                      {showPassword2 ? (
+                        <EyeOff className='h-4 w-4 text-muted-foreground' />
+                      ) : (
+                        <Eye className='h-4 w-4 text-muted-foreground' />
+                      )}
+                      <span className='sr-only'>
+                        {showPassword2 ? 'Hide password' : 'Show password'}
+                      </span>
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,6 +201,17 @@ const ResetPasswordForm = () => {
           </Button>
         </form>
       </Form>
+
+      <p className='px-8 text-center text-sm text-muted-foreground'>
+        Remember your password?{' '}
+        <Button
+          onClick={() => navigation('/login')}
+          variant='link'
+          className='p-1'
+        >
+          Login
+        </Button>
+        </p>
     </>
   );
 };

@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import formatErrorMessages from '@/lib/formatErrorMessages';
 import ResendOTPModel from './ResendOTPModel';
-
+import { Eye, EyeOff } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Enter a valid email address' }),
@@ -33,6 +33,12 @@ const MainLoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const form = useForm({
     mode: 'onChange',
@@ -65,6 +71,7 @@ const MainLoginForm = () => {
       });
     } finally {
       setLoading(false);
+      form.setValue('password', '');
     }
   };
 
@@ -108,15 +115,37 @@ const MainLoginForm = () => {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel htmlFor="id_password">Password</FormLabel>
                 <FormControl>
-                  <Input
-                    type='password'
-                    placeholder='Enter your password...'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <div className='relative'>
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder='Enter your password...'
+                      disabled={loading}
+                      {...field}
+                      className='pr-10'
+                      id="id_password"
+                    />
+                    <Button
+                      type='button'
+                      variant='ghost'
+                      size='sm'
+                      className='absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent'
+                      onClick={togglePasswordVisibility}
+                      disabled={loading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className='h-4 w-4 text-muted-foreground' />
+                      ) : (
+                        <Eye className='h-4 w-4 text-muted-foreground' />
+                      )}
+                      <span className='sr-only'>
+                        {showPassword ? 'Hide password' : 'Show password'}
+                      </span>
+                    </Button>
+                  </div>
                 </FormControl>
+                <FormMessage />
                 <FormItem className='justify-end flex'>
                   <Button variant='link' className='items-center'>
                     <Link
@@ -127,7 +156,6 @@ const MainLoginForm = () => {
                     </Link>
                   </Button>
                 </FormItem>
-                <FormMessage />
               </FormItem>
             )}
           />

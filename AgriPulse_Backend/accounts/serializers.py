@@ -41,7 +41,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate_phone_number(self, value):
         if User.objects.filter(phone_number=value).exists():
             raise serializers.ValidationError("Phone number is already in use.")
-        if not value.isdigit():
+        if not value[1:].isdigit():
             raise serializers.ValidationError("Phone number must contain only digits.")
         if len(value) < 10 or len(value) > 15:
             raise serializers.ValidationError("Phone number must be between 10 and 15 digits.")

@@ -47,7 +47,7 @@ const ForgetPasswordForm = () => {
         setTimeout(() => {
           navigation('/login');
         }, 1000);
-      }else{
+      } else {
         throw res?.response?.data || 'An error occurred';
       }
     } catch (error) {
@@ -59,6 +59,7 @@ const ForgetPasswordForm = () => {
       });
     } finally {
       setLoading(false);
+      form.setValue('email', '');
     }
   };
 
@@ -110,6 +111,26 @@ const ForgetPasswordForm = () => {
           </Button>
         </form>
       </Form>
+
+        <p className='px-8 text-center text-sm text-muted-foreground'>
+          Remember your password?{' '}
+          <Button
+            onClick={() => navigation('/login')}
+            variant='link'
+            className='p-1'
+          >
+            Login
+          </Button>
+          <br />
+          {"Don't have an account?"}{' '}
+          <Button
+            onClick={() => navigation('/sign-up')}
+            variant='link'
+            className='p-1'
+          >
+            Sign up
+          </Button>
+        </p>
     </>
   );
 };

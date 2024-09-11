@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
 import {
   Form,
@@ -19,7 +19,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { useDispatch } from 'react-redux';
-import { verifyOtp } from '@/store/actions/authActions';
+import { sendOtpToEmail, verifyOtp } from '@/store/actions/authActions';
 import { useAuthContext } from '@/context/auth-context';
 import { useToast } from '@/components/ui/use-toast';
 import formatErrorMessages from '@/lib/formatErrorMessages';
@@ -35,7 +35,7 @@ const OTPForm = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { email } = useAuthContext();
-  const { toast } = useToast()
+  const { toast } = useToast();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -56,7 +56,7 @@ const OTPForm = () => {
           description: 'Your Email has been verified',
         });
         navigate('/login');
-      }else{
+      } else {
         throw res?.response?.data || 'An error occurred';
       }
     } catch (error) {
@@ -68,12 +68,44 @@ const OTPForm = () => {
       });
     } finally {
       setLoading(false);
+      form.reset();
+    }
+  };
+
+  const [resendTimer, setResendTimer] = useState(60);
+
+  useEffect(() => {
+    const timer =
+      resendTimer > 0 &&
+      setInterval(() => setResendTimer(resendTimer - 1), 1000);
+    return () => clearInterval(timer);
+  }, [resendTimer]);
+
+  const handleResendOTP = async () => {
+    try {
+      const res = await dispatch(sendOtpToEmail(email));
+      if (res.status === 200 || res.status === 201) {
+        toast({
+          title: 'Success!',
+          description: 'OTP has been resent to your email',
+        });
+        setResendTimer(60);
+      } else {
+        throw res?.response?.data || 'An error occurred';
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: 'Error!',
+        description: formatErrorMessages(error),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
     <>
-      <div className='flex flex-col space-y-2 text-center lg:mt-1 mt-8'>
+      <div className='flex flex-col space-y-2 text-center lg:mt-4 mt-8'>
         <h1 className='text-2xl font-semibold tracking-tight'>
           One-Time Password
         </h1>
@@ -85,14 +117,14 @@ const OTPForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='w-full space-y-2'
+          className='w-full space-y-3 items-center'
         >
           <FormField
             control={form.control}
             name='pin'
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>One-Time Password</FormLabel>
+              <FormItem className='flex flex-col items-center mt-2'>
+                <FormLabel className='text-start'>Enter OTP</FormLabel>
                 <FormControl>
                   <InputOTP maxLength={6} {...field}>
                     <InputOTPGroup>
@@ -124,6 +156,19 @@ const OTPForm = () => {
           </Button>
         </form>
       </Form>
+
+      <div className='text-center'>
+        <span className='text-sm text-muted-foreground pointer-events-none'>
+          {"Didn't receive the OTP ?"}
+        </span>
+        <Button
+          variant='link'
+          onClick={handleResendOTP}
+          disabled={resendTimer > 0}
+        >
+          {resendTimer > 0 ? `Resend OTP in ${resendTimer}s` : 'Resend OTP'}
+        </Button>
+      </div>
     </>
   );
 };
