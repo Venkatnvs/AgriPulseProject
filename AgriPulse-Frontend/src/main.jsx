@@ -5,12 +5,15 @@ import './index.css'
 import { ThemeProvider } from './themes/theme-provider.jsx'
 import store from './store/store.jsx'
 import { Provider } from 'react-redux'
+import { LanguageProvider } from './context/LanguageContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-        <App />
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </ThemeProvider>
     </Provider>
   </StrictMode>,
