@@ -109,6 +109,15 @@ module.exports = {
           '70%': { boxShadow: '0 0 0 10px rgba(255, 82, 82, 0)' },
           '100%': { boxShadow: '0 0 0 0 rgba(255, 82, 82, 0)' },
         },
+        'pulse-green': {
+          '0%': { boxShadow: '0 0 0 0 rgba(0, 255, 0, 1)' },
+          '70%': { boxShadow: '0 0 0 10px rgba(0, 255, 0, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(0, 255, 0, 0)' },
+        },
+        'waterFlow': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -118,6 +127,8 @@ module.exports = {
         pulse: "pulse var(--duration) ease-out infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         'pulse-red': 'pulse-red 2s infinite',
+        'pulse-green': 'pulse-green 2s infinite',
+        'waterFlow': 'waterFlow 2s linear infinite',
       },
     },
   },

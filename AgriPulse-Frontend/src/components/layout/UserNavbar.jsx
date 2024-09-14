@@ -60,6 +60,10 @@ const UserNavbar = () => {
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate('/contact')}>
+            Help
+            <DropdownMenuShortcut>⌘H</DropdownMenuShortcut>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => handleLogout()}>

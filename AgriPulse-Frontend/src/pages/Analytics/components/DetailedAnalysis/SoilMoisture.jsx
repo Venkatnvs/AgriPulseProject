@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import LoadingPage from '@/components/LoadingPage';
+import MotorStatusView from './MotorStatusView';
 
 const SoilMoisture = ({ id, deviceData }) => {
   const [soilMoistureData, setSoilMoistureData] = useState([]);
@@ -214,6 +215,15 @@ const SoilMoisture = ({ id, deviceData }) => {
               </MagicCard>
             );
           })}
+      </div>
+
+      <div className='w-full flex flex-col mt-5'>
+        <MotorStatusView
+          id={id}
+          deviceData={deviceData}
+          soilMoistureData={soilMoistureData}
+          threshold={threshold}
+        />
       </div>
     </>
   );

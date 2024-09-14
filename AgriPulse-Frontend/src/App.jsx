@@ -11,6 +11,7 @@ import ForgetPassword from "./pages/Auth/ForgetPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 
 import L from 'leaflet';
+import MainContactUs from "./pages/Contact/MainContactUs";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="/forgot-password" element={<ForgetPassword />} />
             <Route path="/reset-password/:uidb64/:token" element={<ResetPassword />} />
           </Route>
+          <Route path="/contact" element={<MainContactUs />} />
           <Route element={<PrivateRoute />}>
             {routes.map((route) => {
               return (
