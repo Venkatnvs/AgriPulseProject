@@ -26,3 +26,15 @@ mkdir sensors
 py manage.py startapp sensors ./core/apps/sensors
 
 pip install requests
+
+pip install django-filter
+
+pip install whitenoise
+
+pip install dj-database-url
+
+pip install psycopg2-binary
+
+pip install gunicorn
+
+pip install firebase-admin

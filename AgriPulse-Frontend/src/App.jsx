@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import routes from "./router";
@@ -12,6 +12,7 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 
 import L from 'leaflet';
 import MainContactUs from "./pages/Contact/MainContactUs";
+import { onMessageListener, requestForToken } from "./lib/firebase-config";
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -22,6 +23,19 @@ L.Icon.Default.mergeOptions({
 });
 
 const App = () => {
+  const [tokenFound, setTokenFound] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  useEffect(() => {
+    requestForToken(setTokenFound);
+
+    const unsubscribe = onMessageListener()
+      .then(payload => {
+        console.log('Message received: ', payload);
+        setMessage(payload.notification);
+      })
+      .catch(err => console.log('Failed to receive message', err));
+  }, []);
   return (
     <>
       <BrowserRouter>
