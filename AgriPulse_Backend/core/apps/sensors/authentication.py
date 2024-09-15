@@ -8,6 +8,9 @@ class DeviceTokenAuthentication(BaseAuthentication):
         if not auth_header:
             return None
         
+        if request.method != 'POST':
+            return None
+        
         if not request.path.startswith('/api/core/sensors/'):
             return None
 

@@ -28,7 +28,7 @@ class SoilSensorListCreate(generics.ListCreateAPIView):
     permission_classes = [ permissions.IsAuthenticated ]
 
     def get_queryset(self):
-        return SoilSensor.objects.filter(user=self.request.user)
+        return SoilSensor.objects.filter(device__user=self.request.user)
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -40,7 +40,7 @@ class SoilSensorRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         if getattr(self, 'swagger_fake_view', False):
             return SoilSensor.objects.none()
-        return SoilSensor.objects.filter(user=self.request.user)
+        return SoilSensor.objects.filter(device__user=self.request.user)
     
 class DeviceSelectList(generics.ListAPIView):
     serializer_class = DeviceListSerializer
