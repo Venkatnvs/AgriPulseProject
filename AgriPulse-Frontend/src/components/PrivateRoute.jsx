@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../store/actions/authActions';
+import { fetchUser, sendTokenToServer } from '../store/actions/authActions';
 import { Navigate, Outlet } from 'react-router-dom';
 import LoadingPage from './LoadingPage';
+import { requestForToken } from '@/lib/firebase-config';
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
-  const { authTokens, loading, user } = useSelector(state => state.auth);
+  const { authTokens, loading, user, fcNotificationToken } = useSelector(state => state.auth);
   const [shouldProceed, setShouldProceed] = useState(false);
 
   const fetchUserByToken = async () => {
@@ -29,6 +30,14 @@ const PrivateRoute = () => {
 
     return () => clearTimeout(timeoutId);
   }, []);
+
+  useEffect(() => {
+    if (!fcNotificationToken) {
+      requestForToken(
+        (token) => dispatch(sendTokenToServer(token)),
+      );
+    }
+  }, [fcNotificationToken]);
 
   if (loading || !shouldProceed) {
     return <LoadingPage />;

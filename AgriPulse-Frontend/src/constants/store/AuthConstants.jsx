@@ -5,3 +5,4 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const LOGOUT = "LOGOUT";
 export const FETCH_USER_FAIL = "FETCH_USER_FAIL";
 export const SET_LOADING = "SET_LOADING";
+export const SET_NOTIFICATION_TOKEN = "SET_NOTIFICATION_TOKEN";

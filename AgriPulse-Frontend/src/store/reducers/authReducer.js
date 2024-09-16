@@ -7,6 +7,7 @@ import {
   LOGOUT,
   REGISTER_SUCCESS,
   SET_LOADING,
+  SET_NOTIFICATION_TOKEN,
   SET_USER,
 } from '../../constants/store/AuthConstants';
 
@@ -18,6 +19,7 @@ const initialState = {
   user: null,
   error: null,
   loading: false,
+  fcNotificationToken: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -61,6 +63,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+    case SET_NOTIFICATION_TOKEN:
+      return {
+        ...state,
+        fcNotificationToken: action.payload,
       };
     default:
       return state;

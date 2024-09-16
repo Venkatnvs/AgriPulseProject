@@ -1,3 +1,4 @@
+import { createUpdateFcmTokenApi } from '@/apis/utils/notification';
 import {
   fetchUserApi,
   forgotPasswordApi,
@@ -17,6 +18,7 @@ import {
   LOGOUT,
   REGISTER_SUCCESS,
   SET_LOADING,
+  SET_NOTIFICATION_TOKEN,
   SET_USER,
 } from '../../constants/store/AuthConstants';
 import Cookies from 'js-cookie';
@@ -55,6 +57,11 @@ export const logout = () => {
 
 export const setLoading = () => ({
   type: SET_LOADING,
+});
+
+export const setNotificationToken = token => ({
+  type: SET_NOTIFICATION_TOKEN,
+  payload: token,
 });
 
 export const loginUser = formData => async dispatch => {
@@ -169,3 +176,16 @@ export const verifyResetPasswordRequest = (uidb64, token) => async dispatch => {
     return error;
   }
 };
+
+export const sendTokenToServer = token => async dispatch => {
+  try {
+    const response = await createUpdateFcmTokenApi({
+      fcm_token: token,
+    });
+    dispatch(setNotificationToken(token));
+    return response;
+  } catch (error) {
+    console.error('Error sending token to server', error);
+    return error;
+  }
+}

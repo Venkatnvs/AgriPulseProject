@@ -28,7 +28,7 @@ messaging.onBackgroundMessage(function(payload) {
 
 self.addEventListener('notificationclick', function(event) {
   event.notification.close();
-  const url = event.notification.data?.click_action || 'http://localhost:5173';
+  const url = event.notification.data?.click_action || 'https://nvs-krishi-pragya.vercel.app/';
   event.waitUntil(
     clients.openWindow(url)
   );
