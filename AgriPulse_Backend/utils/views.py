@@ -13,22 +13,35 @@ cred = credentials.Certificate(
 )
 firebase_admin.initialize_app(cred)
 
-def send_push_notification(token, title, body, click_action_url):
+def send_push_notification(token, title, body, click_action_url, image_url=None):
     message = messaging.Message(
         notification=messaging.Notification(
             title=title,
             body=body,
+            image=image_url,
         ),
         token=token,
         webpush=messaging.WebpushConfig(
             notification=messaging.WebpushNotification(
                 title=title,
                 body=body,
-                icon='https://nvs-krishi-pragya.vercel.app/small_logo.png'
+                icon=f'{settings.FRONTEND_URL}/small_logo.png',
+                image=image_url,
             ),
             data={
                 "click_action": click_action_url
             }
+        ),
+        android=messaging.AndroidConfig(
+            notification=messaging.AndroidNotification(
+                title=title,
+                body=body,
+                icon='small_icon',
+                image=image_url,
+                color='#f45342',
+                click_action='CAPACITOR_NOTIFICATION_CLICK',
+            ),
+            priority='high',
         )
     )
     response = messaging.send(message)

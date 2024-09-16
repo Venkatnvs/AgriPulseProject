@@ -9,6 +9,7 @@ from datetime import timedelta
 import os
 import csv
 import threading
+from utils.constants import SOIL_SENSOR_NEEDS_WATER_NOTIFICATION_IMAGE_URL
 
 file_path = os.path.join(settings.BASE_DIR, 'datasets', 'crop_data.csv')
 
@@ -42,9 +43,10 @@ def notify_user(sensor_data, user):
     if should_notify(sensor_data, user):
         send_push_notification(
             user.userfcmtoken.fcm_token,
-            'Need to water !',
-            f"Soil moisture is low in {sensor_data.device.name}.",
-            settings.FRONTEND_URL
+            'Need to water!',
+            f"Attention: The soil moisture level is low in your {sensor_data.device.name}. Please water your plants.",
+            settings.FRONTEND_URL,
+            SOIL_SENSOR_NEEDS_WATER_NOTIFICATION_IMAGE_URL
         )
         user.userfcmtoken.last_notified = sensor_data.timestamp
         user.userfcmtoken.save()

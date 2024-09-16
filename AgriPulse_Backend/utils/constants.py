@@ -1,0 +1,1 @@
+SOIL_SENSOR_NEEDS_WATER_NOTIFICATION_IMAGE_URL = 'https://firebasestorage.googleapis.com/v0/b/krishi-pragya.appspot.com/o/notification_img.webp?alt=media&token=a0909448-c613-41d7-a285-5678c20e97f0'
