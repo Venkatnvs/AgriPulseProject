@@ -35,7 +35,7 @@ def send_push_notification(token, title, body, click_action_url):
     return response
 
 class SendPushNotificationView(generics.GenericAPIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated, permissions.IsAdminUser]
     serializer_class = pushNotificationSerializer
 
     def post(self, request):

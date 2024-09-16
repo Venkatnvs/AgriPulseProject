@@ -10,6 +10,8 @@ const PrivateRoute = () => {
   const { authTokens, loading, user, fcNotificationToken } = useSelector(state => state.auth);
   const [shouldProceed, setShouldProceed] = useState(false);
 
+  console.log(authTokens, user, fcNotificationToken, 'PrivateRoute');
+
   const fetchUserByToken = async () => {
       const res = await dispatch(fetchUser());
       if (res?.error) {

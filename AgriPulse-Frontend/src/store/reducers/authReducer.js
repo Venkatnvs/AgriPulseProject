@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../constants/CookiesConstants';
+import { ACCESS_TOKEN, NOTIFICATION_FCM_TOKEN, REFRESH_TOKEN } from '../../constants/CookiesConstants';
 import {
   AUTH_FAIL,
   FETCH_USER_FAIL,
@@ -19,7 +19,7 @@ const initialState = {
   user: null,
   error: null,
   loading: false,
-  fcNotificationToken: null,
+  fcNotificationToken: Cookies.get(NOTIFICATION_FCM_TOKEN),
 };
 
 const authReducer = (state = initialState, action) => {

@@ -10,7 +10,7 @@ import {
   verifyOtpApi,
   verifyResetPasswordRequestApi,
 } from '../../apis/auth';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../constants/CookiesConstants';
+import { ACCESS_TOKEN, NOTIFICATION_FCM_TOKEN, REFRESH_TOKEN } from '../../constants/CookiesConstants';
 import {
   AUTH_FAIL,
   FETCH_USER_FAIL,
@@ -182,6 +182,7 @@ export const sendTokenToServer = token => async dispatch => {
     const response = await createUpdateFcmTokenApi({
       fcm_token: token,
     });
+    Cookies.set(NOTIFICATION_FCM_TOKEN, token, { expires: 1 });
     dispatch(setNotificationToken(token));
     return response;
   } catch (error) {

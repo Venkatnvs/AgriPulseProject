@@ -6,8 +6,14 @@ from utils.views import send_push_notification
 from django.conf import settings
 from utils.models import UserFCMToken
 from datetime import timedelta
+import os
+import csv
+import threading
+
+file_path = os.path.join(settings.BASE_DIR, 'datasets', 'crop_data.csv')
 
 def should_notify(sensor_data, user):
+    crop_thresholds = 50
     if user is None or user.userfcmtoken is None:
         return False
 
@@ -16,9 +22,24 @@ def should_notify(sensor_data, user):
 
     if fcm_token is None:
         return False
+    
+    crop_type = sensor_data.device.fields.first().crop_type
 
-    time_since_last_notification = sensor_data.timestamp - (last_notified or sensor_data.timestamp - timedelta(minutes=11))
-    should_notify = (sensor_data.get_average_soil_moisture() < 50) and time_since_last_notification > timedelta(minutes=10)
+    with open(file_path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            name = row['CROP']
+            level = row['Level or Growth']
+            csv_crop_type = f"{name} ({level})"
+            lower_percent_value = float(row['Lower % Value'].strip('%')) or 0
+            upper_percent_value = float(row['Upper % value'].strip('%')) or 100
+            avg_brack_point = (lower_percent_value + upper_percent_value) / 2
+            if csv_crop_type == crop_type:
+                crop_thresholds = avg_brack_point
+                break
+
+    time_since_last_notification = sensor_data.timestamp - (last_notified or sensor_data.timestamp - timedelta(minutes=settings.SOIL_MOISTURE_NOTIFICATION_DELTA + 1))
+    should_notify = (sensor_data.get_average_soil_moisture() < crop_thresholds) and time_since_last_notification > timedelta(minutes=settings.SOIL_MOISTURE_NOTIFICATION_DELTA)
 
     return should_notify
 
@@ -81,10 +102,8 @@ class SoilSensorSerializer(serializers.ModelSerializer):
         user = new_validated_data.pop('user', None)
         sensor_data = SoilSensor.objects.create(device=device, **new_validated_data)
 
-        try:
-            notify_user(sensor_data, user)
-        except Exception as e:
-            print(e)
+        thread = threading.Thread(target=notify_user, args=(sensor_data, user))
+        thread.start()
         
         return sensor_data
     
