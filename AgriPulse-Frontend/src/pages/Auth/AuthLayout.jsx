@@ -31,7 +31,10 @@ const AuthLayout = ({ children }) => {
               borderImage: 'fill 0 linear-gradient(#0001, #000A00)',
             }}
           />
-          <div className='relative z-20 flex items-center text-lg font-medium rounded-md w-fit px-2'>
+          <div 
+            className='relative z-20 flex items-center text-lg font-medium rounded-md w-fit px-2 cursor-pointer'
+            onClick={() => navigate('/')}
+          >
             <img
               src={MainLogo}
               alt='logo'
@@ -56,7 +59,9 @@ const AuthLayout = ({ children }) => {
         <div className='flex h-full items-center p-4 lg:p-8 flex-col'>
           <header className='sticky inset-x-0 top-0 w-full'>
             <nav className='flex items-center justify-between px-2 lg:px-4 py-1 md:justify-end gap-2 lg:gap-5'>
-              <div className='flex items-center w-full'>
+              <div className='flex items-center w-full cursor-pointer'
+                onClick={() => navigate('/')}
+              >
                 <img
                   src={MainLogo}
                   alt='logo'

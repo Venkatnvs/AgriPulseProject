@@ -52,7 +52,7 @@ const MainDashBoardContainer = ({
 
   return (
     <>
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4 mt-4'>
+      <div className='grid gap-4 grid-cols-2 md:grid-cols-2 lg:grid-cols-4 mt-4'>
         {data.map((item, index) => (
           <OverViewCard
             key={index}
@@ -143,8 +143,8 @@ const MainDashBoard = () => {
         fetchCountData={fetchCountData}
       />
       <div className='flex items-center justify-between space-y-2'>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7 mt-5'>
-          <div className='col-span-full'>
+        <div className='grid grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-7 mt-5 space-y-4 md:space-y-0'>
+          <div className='col-span-full w-full'>
             {chartData?.chart1 && (
               <BarAverageGraph chartData={chartData?.chart1} />
             )}

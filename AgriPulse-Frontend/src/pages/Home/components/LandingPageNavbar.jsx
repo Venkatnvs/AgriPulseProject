@@ -9,12 +9,14 @@ import { Link } from 'react-router-dom';
 const LandingPageNavbar = ({
   isLoggedin,
   handleLogout,
+  navigate = () => {},
 }) => {
   return (
     <header className='lg:flex items-center justify-between p-1 md:p-2 sm:px-1 lg:px-2'>
       <div className='flex items-center justify-between w-full'>
         <div
           className='flex flex-row items-center space-x-1 cursor-pointer'
+          onClick={() => navigate('/')}
         >
 
         <img src={MainLogo} alt='logo' className='max-w-[220px] w-auto h-14' />

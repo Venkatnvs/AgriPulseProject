@@ -42,6 +42,7 @@ const MainContactUs = () => {
           <LandingPageNavbar
             isLoggedin={authTokens?.access ? true : false}
             handleLogout={handleLogout}
+            navigate={navigate}
           />
         </div>
       </div>
