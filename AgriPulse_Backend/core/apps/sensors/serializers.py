@@ -14,17 +14,13 @@ file_path = os.path.join(settings.BASE_DIR, 'datasets', 'crop_data.csv')
 
 def should_notify(sensor_data, user):
     crop_thresholds = 50
-    if user is None or user.userfcmtoken is None:
+    if user is None or not hasattr(user, 'userfcmtoken') or user.userfcmtoken is None:
         return False
-
-    fcm_token = user.userfcmtoken.fcm_token
+    fcm_token = getattr(user.userfcmtoken, 'fcm_token', None)
     last_notified = user.userfcmtoken.last_notified
-
     if fcm_token is None:
         return False
-    
     crop_type = sensor_data.device.fields.first().crop_type
-
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -37,7 +33,6 @@ def should_notify(sensor_data, user):
             if csv_crop_type == crop_type:
                 crop_thresholds = avg_brack_point
                 break
-
     time_since_last_notification = sensor_data.timestamp - (last_notified or sensor_data.timestamp - timedelta(minutes=settings.SOIL_MOISTURE_NOTIFICATION_DELTA + 1))
     should_notify = (sensor_data.get_average_soil_moisture() < crop_thresholds) and time_since_last_notification > timedelta(minutes=settings.SOIL_MOISTURE_NOTIFICATION_DELTA)
 

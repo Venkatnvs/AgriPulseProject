@@ -7,16 +7,14 @@ import { requestForToken } from '@/lib/firebase-config';
 
 const PrivateRoute = () => {
   const dispatch = useDispatch();
-  const { authTokens, loading, user, fcNotificationToken } = useSelector(state => state.auth);
+  const { authTokens, loading, user, fcNotificationToken } = useSelector((state) => state.auth);
   const [shouldProceed, setShouldProceed] = useState(false);
 
-  console.log(authTokens, user, fcNotificationToken, 'PrivateRoute');
-
   const fetchUserByToken = async () => {
-      const res = await dispatch(fetchUser());
-      if (res?.error) {
-        console.log(res.error);
-      }
+    const res = await dispatch(fetchUser());
+    if (res?.error) {
+      console.log(res.error);
+    }
   };
 
   useEffect(() => {
@@ -35,11 +33,11 @@ const PrivateRoute = () => {
 
   useEffect(() => {
     if (!fcNotificationToken) {
-      requestForToken(
-        (token) => dispatch(sendTokenToServer(token)),
-      );
+      requestForToken((token) => {
+        dispatch(sendTokenToServer(token));
+      });
     }
-  }, [fcNotificationToken]);
+  }, [fcNotificationToken, dispatch]);
 
   if (loading || !shouldProceed) {
     return <LoadingPage />;
@@ -49,7 +47,7 @@ const PrivateRoute = () => {
     return <Outlet />;
   }
 
-  return <Navigate to='/login' replace />;
-};
+  return <Navigate to="/login" replace />;
+}
 
-export default PrivateRoute;
+export default PrivateRoute
