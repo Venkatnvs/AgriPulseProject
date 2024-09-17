@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  CardContent,
-} from '@/components/ui/card';
+import { CardContent } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { degToCompass } from '../../scripts/utils';
 import { weatherIcons } from '@/constants/Icons/WeatherIcons';
@@ -12,7 +10,7 @@ const ForecastCard = ({ forecast, icon }) => {
     <CardContent>
       <div className='flex flex-row flex-wrap'>
         <ScrollArea orientation='horizontal' className='overflow-x-auto'>
-          <div className='flex flex-nowrap gap-4 mb-3'>
+          <div className='flex flex-nowrap gap-3 mb-3'>
             {forecast.map(item => (
               <div
                 key={item.dt}

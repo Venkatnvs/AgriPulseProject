@@ -20,7 +20,7 @@ const WeatherCard = ({
 }) => {
   return (
     <CardContent>
-      <div className='grid grid-cols-4 gap-4'>
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 space-x-3'>
         <div className='col-span-1 flex flex-col items-center'>
           <div className='flex flex-1 flex-row items-center'>
             <div className='w-2/3 mb-2'>

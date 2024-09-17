@@ -38,7 +38,7 @@ import {
 } from '@/components/ui/dialog';
 import DeviceFinalConfigDialog from './DeviceFinalConfigDialog';
 
-const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
+const DetailsofDevice = ({ device, fetchDevice = () => {} }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -110,20 +110,9 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                 <DialogDescription>
                   Are you sure you want to delete this device?
                 </DialogDescription>
-                <DialogFooter
-                  className='flex justify-end gap-4'
-                >
-                  <Button
-                    variant='destructive'
-                    onClick={handleDelete}
-                  >
-                    {
-                      loading ? (
-                        <Loader size={16} />
-                      ) : (
-                        'Delete'
-                      )
-                    }
+                <DialogFooter className='flex justify-end gap-4'>
+                  <Button variant='destructive' onClick={handleDelete}>
+                    {loading ? <Loader size={16} /> : 'Delete'}
                   </Button>
                   <Button variant='outline' onClick={() => setShowEdit(false)}>
                     Cancel
@@ -151,9 +140,9 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                       : 'Not Configured'}
                   </span>
                 </div>
-                <div className='flex gap-4 flex-wrap'>
+                <div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-4'>
                   <strong className='text-gray-700'>Token:</strong>
-                  <div className='flex items-center space-x-2 overflow-auto'>
+                  <div className='flex items-center space-x-2 overflow-x-auto'>
                     <span className='border bg-gray-100/10 text-sm border-gray-300 dark:border-gray-700 px-2 py-1 rounded-md'>
                       {device.access_token}
                     </span>
@@ -190,9 +179,7 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                           <PulsatingButton
                             className='ml-4 py-1 bg-primary dark:bg-primary text-white dark:text-white'
                             pulseColor='#ff9800'
-                            onClick={() =>
-                              setShowConfigure(true)
-                            }
+                            onClick={() => setShowConfigure(true)}
                           >
                             Configure
                           </PulsatingButton>
@@ -204,16 +191,14 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                     )}
                   </div>
                 </div>
-                {
-                  showConfigure && (
-                    <DeviceFinalConfigDialog
-                      deviceData={device}
-                      openLinkDeviceModal={showConfigure}
-                      setOpenLinkDeviceModal={setShowConfigure}
-                      fetchDevice={fetchDevice}
-                    />
-                  )
-                }
+                {showConfigure && (
+                  <DeviceFinalConfigDialog
+                    deviceData={device}
+                    openLinkDeviceModal={showConfigure}
+                    setOpenLinkDeviceModal={setShowConfigure}
+                    fetchDevice={fetchDevice}
+                  />
+                )}
                 <div className='flex space-x-2'>
                   <strong className='text-gray-700'>Active:</strong>
                   <span>{device.is_active ? 'Yes' : 'No'}</span>
@@ -221,16 +206,16 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                 <div>
                   <div>
                     <strong className='text-gray-700'>Fields:</strong>
-                    <span
-                      className='inline-block ml-2 text-sm text-primary cursor-pointer'
-                    >
-                    <Tooltip>
+                    <span className='inline-block ml-2 text-sm text-primary cursor-pointer'>
+                      <Tooltip>
                         <TooltipTrigger asChild>
                           <PulsatingButton
                             className='ml-4 py-0 text-sm bg-slate-400 dark:bg-slate-900 text-white dark:text-white'
                             pulseColor='#a6a9ad'
                             onClick={() =>
-                              navigate(`/dashboard/devices/${device.id}/configure`)
+                              navigate(
+                                `/dashboard/devices/${device.id}/configure`,
+                              )
                             }
                           >
                             Add Fields
@@ -244,11 +229,10 @@ const DetailsofDevice = ({ device, fetchDevice = () => {}}) => {
                   </div>
                   <ul className='list-disc list-inside mt-2 ml-8'>
                     {device?.fields_data?.map((value, idx) => (
-                        <li key={idx} className='mb-1'>
-                          <strong>{value?.name}</strong>
-                        </li>
-                      )
-                    )}
+                      <li key={idx} className='mb-1'>
+                        <strong>{value?.name}</strong>
+                      </li>
+                    ))}
                   </ul>
                 </div>
                 <div>

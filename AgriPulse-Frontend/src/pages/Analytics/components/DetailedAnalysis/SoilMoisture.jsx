@@ -182,7 +182,7 @@ const SoilMoisture = ({ id, deviceData }) => {
           Warning: Data is not beeing recived from the sensors
         </p>
       )}
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+      <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
         {Array(deviceData?.configurations?.soil_sensors_count)
           .fill(0)
           .map((_, index) => {

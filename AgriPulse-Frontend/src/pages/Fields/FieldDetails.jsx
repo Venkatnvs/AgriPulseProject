@@ -69,14 +69,17 @@ const FieldDetailsMain = ({ data, setFieldData = () => {} }) => {
   const [openLinkDeviceModal, setOpenLinkDeviceModal] = useState(false);
 
   const fetchWeatherData = async () => {
-    try{
-      const res = await fetchWeatherAndForecastApi({ lat: data?.main_coordinate[1], lon: data?.main_coordinate[0] });
+    try {
+      const res = await fetchWeatherAndForecastApi({
+        lat: data?.main_coordinate[1],
+        lon: data?.main_coordinate[0],
+      });
       setWeatherData(res.data?.weather);
       setForecastData(res.data?.forecast);
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     if (data?.main_coordinate) {
@@ -106,34 +109,33 @@ const FieldDetailsMain = ({ data, setFieldData = () => {} }) => {
         }
       />
 
-      {
-        openLinkDeviceModal && (
-          <LinkDeviceDialog
-            openLinkDeviceModal={openLinkDeviceModal}
-            setOpenLinkDeviceModal={setOpenLinkDeviceModal}
-            data={data}
-            setFieldData={setFieldData}
-          />
-        )
-      }
+      {openLinkDeviceModal && (
+        <LinkDeviceDialog
+          openLinkDeviceModal={openLinkDeviceModal}
+          setOpenLinkDeviceModal={setOpenLinkDeviceModal}
+          data={data}
+          setFieldData={setFieldData}
+        />
+      )}
 
-      <section className='flex flex-col gap-4 h-full'>
-        <div className='grid flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3'>
-          <div className='flex-col items-start gap-8 md:flex lg:sticky lg:top-0 self-start'>
-              <MainFieldDetails
-                navButtons={navButtons}
-                setNavButtons={setNavButtons}
-                mapViewRef={mapViewRef}
-                weatherDetailsRef={weatherDetailsRef}
-                forecastDetailsRef={forecastDetailsRef}
-                fieldDataDetailsRef={fieldDataDetailsRef}
-              />
+      <section className='flex flex-col gap-4 h-full w-full'>
+        <div className='grid flex-1 grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 w-full'>
+          <div className='flex-col items-start gap-8 md:flex lg:sticky lg:top-0 self-start hidden w-full'>
+            <MainFieldDetails
+              navButtons={navButtons}
+              setNavButtons={setNavButtons}
+              mapViewRef={mapViewRef}
+              weatherDetailsRef={weatherDetailsRef}
+              forecastDetailsRef={forecastDetailsRef}
+              fieldDataDetailsRef={fieldDataDetailsRef}
+            />
           </div>
-          <div className='relative flex-col items-start gap-6 md:flex col-span-2'>
+          <div className='flex-1 flex flex-col col-span-2 space-y-4'>
             <div
               ref={mapViewRef}
               className={`min-h-[90vh] flex rounded-xl bg-secondary/50 p-4 w-full h-full flex-col ${
-                navButtons[0].isActive && 'border border-primary'}`}
+                navButtons[0].isActive && 'border border-primary'
+              }`}
             >
               <h3 className='text-xl my-2'>Field Map</h3>
               {data ? (
@@ -143,38 +145,38 @@ const FieldDetailsMain = ({ data, setFieldData = () => {} }) => {
               )}
             </div>
             <Separator />
+
             <div
               ref={weatherDetailsRef}
-              className={`flex rounded-xl bg-secondary/50 p-4 w-full flex-col
-                ${navButtons[1].isActive && 'border border-primary'}`}
+              className={`flex rounded-xl bg-secondary/50 p-4 w-full flex-col ${
+                navButtons[1].isActive && 'border border-primary'
+              }`}
             >
               <h3 className='text-xl my-2'>Weather Details</h3>
-              <WeatherDetails
-                weatherData={weatherData}
-              />
+              <WeatherDetails weatherData={weatherData} />
             </div>
             <Separator />
+
             <div
               ref={forecastDetailsRef}
-              className={`flex rounded-xl bg-secondary/50 p-4 w-full flex-col
-                ${navButtons[2].isActive && 'border border-primary'}`}
+              className={`flex rounded-xl bg-secondary/50 p-2 md:p-4 w-full flex-col ${
+                navButtons[2].isActive && 'border border-primary'
+              }`}
             >
               <h3 className='text-xl mt-2'>Forecast Details</h3>
               <p className='text-sm text-gray-500 mb-2'>5 Day Forecast</p>
-              <ForecastDetails
-                forecastData={forecastData}
-              />
+              <ForecastDetails forecastData={forecastData} />
             </div>
             <Separator />
+
             <div
               ref={fieldDataDetailsRef}
-              className={`flex rounded-xl bg-secondary/50 p-4 w-full flex-col
-                ${navButtons[3].isActive && 'border border-primary'}`}
+              className={`flex rounded-xl bg-secondary/50 p-2 w-full flex-col ${
+                navButtons[3].isActive && 'border border-primary'
+              }`}
             >
               <h3 className='text-xl my-2'>Field Details</h3>
-              <FieldDataDetails 
-                data={data}
-              />
+              <FieldDataDetails data={data} />
             </div>
           </div>
         </div>
