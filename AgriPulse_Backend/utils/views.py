@@ -93,3 +93,9 @@ class UserFCMTokenView(generics.GenericAPIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Token saved!', 'status': status.HTTP_200_OK})
+    
+class ServerStatusView(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response({'message': 'Server is up and running!', 'status': status.HTTP_200_OK})
