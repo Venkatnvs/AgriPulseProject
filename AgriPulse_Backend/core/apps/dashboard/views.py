@@ -104,6 +104,9 @@ class GetAllMainDashBoardGraphData(generics.GenericAPIView):
             for i in range(0, datetime.now().month):
                 if not any(x['month'] == datetime.strptime(str(i+1), "%m").strftime('%B') for x in final_data):
                     final_data.append({'month': datetime.strptime(str(i+1), "%m").strftime('%B'), 'devices': 0, 'fields': 0})
+        else:
+            for i in range(0, datetime.now().month):
+                final_data.append({'month': datetime.strptime(str(i+1), "%m").strftime('%B'), 'devices': 0, 'fields': 0})
         final_data = sorted(final_data, key=lambda x: datetime.strptime(x['month'], '%B'))
 
         if len(final_data) > 1:
@@ -126,7 +129,7 @@ class GetAllMainDashBoardGraphData(generics.GenericAPIView):
         else:
             final_data[-1]['devices_increase_percentage'] = None
             final_data[-1]['fields_increase_percentage'] = None
-        return final_data
+        return final_data if final_data else []
 
     def get_dashboard_data1(self, user, start_date, end_date):
         sensors = SoilSensor.objects.filter(
